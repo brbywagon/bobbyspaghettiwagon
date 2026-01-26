@@ -252,73 +252,76 @@
 </section>
 
 
-  <script>
-    (() => {
-      const scene = document.getElementById("spaghetti-scene");
-      const meatball = document.getElementById("meatball");
-      const meatballShine = meatball?.querySelector?.(":scope::after"); // not directly selectable; we’ll animate via CSS var instead
-      const spaghettiWrap = document.getElementById("spaghetti-wrap");
+<script>
+(() => {
+  const scene = document.getElementById("spaghetti-scene");
+  const meatball = document.getElementById("meatball");
+  const spaghettiWrap = document.getElementById("spaghetti-wrap");
+  const spaghettiStack = document.getElementById("spaghetti-stack");
+  const storyInner = document.getElementById("story-inner");
 
-      // Use a CSS variable for the shine shift
-      meatball.style.setProperty("--shineX", "0px");
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 
-      const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  let latestScrollY = window.scrollY;
+  window.addEventListener("scroll", () => { latestScrollY = window.scrollY; }, { passive: true });
 
-      let latestScrollY = window.scrollY;
-      window.addEventListener("scroll", () => { latestScrollY = window.scrollY; }, { passive: true });
-
-      function tick() {
-        const rect = scene.getBoundingClientRect();
-        const sceneTop = window.scrollY + rect.top;
-        const sceneHeight = scene.offsetHeight;
-        const viewportH = window.innerHeight;
-
-        // progress: 0 at top of scene, 1 at bottom of scene
-        const raw = (latestScrollY - sceneTop) / (sceneHeight - viewportH);
-        const progress = clamp(raw);
-
-        // ----- 1) Meatball stays pinned but “rolls” with scroll -----
-        const spins = 5; // number of full rotations across the scene
-        const rot = progress * (spins * 360);
-        const bob = Math.sin(progress * Math.PI * 2) * 6; // subtle wobble
-        const squash = 1 - Math.abs(Math.sin(progress * Math.PI)) * 0.04; // tiny squash illusion
-
-        meatball.style.transform = `translateY(${bob}px) rotate(${rot}deg) scaleY(${squash}) scaleX(${1 + (1-squash)})`;
-
-        // fake “greasy” shine drift by adjusting filter a bit
-        const greasiness = 0.95 + progress * 0.15;
-        meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
-
-// ----- 2) Spaghetti pour reveal (scrubbed through 6 tiles) -----
-const spaghettiStack = document.getElementById("spaghetti-stack");
-
-const tileEl = document.querySelector(".spaghetti-tile");
-const tileHeight = tileEl ? tileEl.getBoundingClientRect().height : 320;
-const tiles = 6;
-
-const totalPour = tileHeight * tiles;      // total scroll-driven distance
-const poured = progress * totalPour;       // how much spaghetti we've "dispensed"
-
-// First: grow the pour window until it reaches one tile tall
-const visible = Math.min(poured, tileHeight);
-spaghettiWrap.style.height = `${visible}px`;
-
-// Then: once the window is full height, slide the stack upward to reveal tiles 2..6
-const maxOffset = totalPour - tileHeight;
-const offset = Math.min(Math.max(poured - tileHeight, 0), maxOffset);
-
-spaghettiStack.style.transform = `translateY(${-offset}px)`;
-spaghettiStack.style.willChange = "transform";
-
-const storyInner = document.getElementById("story-inner");
-if (storyInner) {
-  storyInner.style.transform = `translateY(${-offset}px)`;
-  storyInner.style.willChange = "transform";
-}
-
+  function tick() {
+    if (!scene || !meatball || !spaghettiWrap || !spaghettiStack) {
       requestAnimationFrame(tick);
-    })();
-  </script>
+      return;
+    }
+
+    const rect = scene.getBoundingClientRect();
+    const sceneTop = window.scrollY + rect.top;
+    const sceneHeight = scene.offsetHeight;
+    const viewportH = window.innerHeight;
+
+    // progress: 0 at top of scene, 1 at bottom of scene
+    const raw = (latestScrollY - sceneTop) / (sceneHeight - viewportH);
+    const progress = clamp(raw);
+
+    // ----- 1) Meatball rolls with scroll -----
+    const spins = 5;
+    const rot = progress * (spins * 360);
+    const bob = Math.sin(progress * Math.PI * 2) * 6;
+    const squash = 1 - Math.abs(Math.sin(progress * Math.PI)) * 0.04;
+
+    meatball.style.transform =
+      `translateY(${bob}px) rotate(${rot}deg) scaleY(${squash}) scaleX(${1 + (1 - squash)})`;
+
+    const greasiness = 0.95 + progress * 0.15;
+    meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
+
+    // ----- 2) Spaghetti conveyor (6 tiles) -----
+    const tileEl = document.querySelector(".spaghetti-tile");
+    const tileHeight = tileEl ? tileEl.getBoundingClientRect().height : 320;
+    const tiles = 6;
+
+    const totalPour = tileHeight * tiles;
+    const poured = progress * totalPour;
+
+    // Grow viewport up to one tile tall
+    const visible = Math.min(poured, tileHeight);
+    spaghettiWrap.style.height = `${visible}px`;
+
+    // Slide stack upward after first tile
+    const maxOffset = totalPour - tileHeight;
+    const offset = Math.min(Math.max(poured - tileHeight, 0), maxOffset);
+
+    spaghettiStack.style.transform = `translateY(${-offset}px)`;
+
+    // ----- 3) Story follows spaghetti (printed on noodles) -----
+    if (storyInner) {
+      storyInner.style.transform = `translateY(${-offset}px)`;
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+})();
+</script>
+
 </body>
 </html>
 
