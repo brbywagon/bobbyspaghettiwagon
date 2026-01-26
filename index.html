@@ -31,7 +31,7 @@
     /* --------- Scroll Scene --------- */
     /* This creates “scroll distance” to drive the animation */
     #spaghetti-scene {
-      height: 260vh;            /* more = longer pour */
+      height: 420vh;            /* more = longer pour */
       position: relative;
       max-width: 1100px;
       margin: 40px auto 0 auto;
@@ -163,24 +163,25 @@
   <section id="spaghetti-scene">
     <div class="scene-inner">
       <div>
-        <div id="mechanic-stage">
-          <!-- Replace these with your real assets -->
-          <img id="mechanic-img" src="greasy mechanic.png" alt="Greasy mechanic" />
-          <div id="spaghetti-wrap" aria-hidden="true">
-            <div id="spaghetti-stack">
-              <div class="spaghetti-tile t1"></div>
-              <div class="spaghetti-tile t2"></div>
-              <div class="spaghetti-tile t3"></div>
-              <div class="spaghetti-tile t4"></div>
-              <div class="spaghetti-tile t5"></div>
-              <div class="spaghetti-tile t6"></div>
-            </div>
-        </div>
+<div id="mechanic-stage">
+  <img id="mechanic-img" src="greasy mechanic.png" alt="Greasy mechanic" />
 
-        <div style="text-align:center; margin-top: 12px;">
-          <span class="scroll-hint">⬇️ scroll to pour • ⬆️ scroll to rewind</span>
-        </div>
-      </div>
+  <div id="spaghetti-wrap" aria-hidden="true">
+    <div id="spaghetti-stack">
+      <div class="spaghetti-tile t1"></div>
+      <div class="spaghetti-tile t2"></div>
+      <div class="spaghetti-tile t3"></div>
+      <div class="spaghetti-tile t4"></div>
+      <div class="spaghetti-tile t5"></div>
+      <div class="spaghetti-tile t6"></div>
+    </div>
+  </div>
+</div> <!-- ✅ CLOSES mechanic-stage -->
+
+<div style="text-align:center; margin-top: 12px;">
+  <span class="scroll-hint">⬇️ scroll to pour • ⬆️ scroll to rewind</span>
+</div>
+
 
       <div>
         <div id="meatball" aria-label="Meatball"></div>
@@ -227,7 +228,8 @@
         meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
 
         // ----- 2) Spaghetti pour reveal (scrubbed) -----
-        const tileHeight = 320;    // must match CSS .spaghetti-tile height
+       const tileEl = document.querySelector(".spaghetti-tile");
+       const tileHeight = tileEl ? tileEl.getBoundingClientRect().height : 320;
         const tiles = 6;
         const maxPourPx = tileHeight * tiles;
         spaghettiWrap.style.height = `${progress * maxPourPx}px`;
