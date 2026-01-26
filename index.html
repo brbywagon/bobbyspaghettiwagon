@@ -310,10 +310,11 @@ const offset = Math.min(Math.max(poured - tileHeight, 0), maxOffset);
 spaghettiStack.style.transform = `translateY(${-offset}px)`;
 spaghettiStack.style.willChange = "transform";
 
-
-
-        requestAnimationFrame(tick);
-      }
+const storyInner = document.getElementById("story-inner");
+if (storyInner) {
+  storyInner.style.transform = `translateY(${-offset}px)`;
+  storyInner.style.willChange = "transform";
+}
 
       requestAnimationFrame(tick);
     })();
