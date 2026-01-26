@@ -161,34 +161,40 @@
 
   <!-- Scroll-driven interactive scene -->
   <section id="spaghetti-scene">
-    <div class="scene-inner">
-      <div>
-<div id="mechanic-stage">
-  <img id="mechanic-img" src="greasy mechanic.png" alt="Greasy mechanic" />
+<!-- Scroll-driven interactive scene -->
+<section id="spaghetti-scene">
+  <div class="scene-inner">
 
-  <div id="spaghetti-wrap" aria-hidden="true">
-    <div id="spaghetti-stack">
-      <div class="spaghetti-tile t1"></div>
-      <div class="spaghetti-tile t2"></div>
-      <div class="spaghetti-tile t3"></div>
-      <div class="spaghetti-tile t4"></div>
-      <div class="spaghetti-tile t5"></div>
-      <div class="spaghetti-tile t6"></div>
-    </div>
-  </div>
-</div> <!-- ✅ CLOSES mechanic-stage -->
+    <!-- LEFT COLUMN -->
+    <div>
+      <div id="mechanic-stage">
+        <img id="mechanic-img" src="greasy mechanic.png" alt="Greasy mechanic" />
 
-<div style="text-align:center; margin-top: 12px;">
-  <span class="scroll-hint">⬇️ scroll to pour • ⬆️ scroll to rewind</span>
-</div>
-
-
-      <div>
-        <div id="meatball" aria-label="Meatball"></div>
-        <div style="text-align:center; margin-top: 10px; opacity:.9;">MEATBALL CONTROL MODULE</div>
+        <div id="spaghetti-wrap" aria-hidden="true">
+          <div id="spaghetti-stack">
+            <div class="spaghetti-tile t1"></div>
+            <div class="spaghetti-tile t2"></div>
+            <div class="spaghetti-tile t3"></div>
+            <div class="spaghetti-tile t4"></div>
+            <div class="spaghetti-tile t5"></div>
+            <div class="spaghetti-tile t6"></div>
+          </div>
+        </div>
       </div>
+
+      <div style="text-align:center; margin-top: 12px;">
+        <span class="scroll-hint">⬇️ scroll to pour • ⬆️ scroll to rewind</span>
+      </div>
+    </div> <!-- ✅ CLOSE LEFT COLUMN -->
+
+    <!-- RIGHT COLUMN -->
+    <div>
+      <div id="meatball" aria-label="Meatball"></div>
+      <div style="text-align:center; margin-top: 10px; opacity:.9;">MEATBALL CONTROL MODULE</div>
     </div>
-  </section>
+
+  </div>
+</section>
 
   <script>
     (() => {
