@@ -69,24 +69,41 @@
       filter: contrast(1.05) saturate(1.05);
     }
 
-    /* Spaghetti reveal wrapper (mask). Height is driven by JS */
-    #spaghetti-wrap {
-      position: absolute;
-      left: 52%;
-      top: 40%;
-      width: 220px;
-      height: 0px;             /* JS updates this */
-      overflow: hidden;
-      transform: translateX(-50%);
-      will-change: height;
-      pointer-events: none;
-    }
-    #spaghetti-img {
-      width: 100%;
-      height: auto;
-      display: block;
-      filter: drop-shadow(0 10px 10px rgba(0,0,0,.25));
-    }
+/* Spaghetti reveal wrapper (mask). Height is driven by JS */
+#spaghetti-wrap {
+  position: absolute;
+  left: 52%;
+  top: 40%;
+  width: 220px;
+  height: 0px;              /* JS updates this */
+  overflow: hidden;
+  transform: translateX(-50%);
+  will-change: height;
+  pointer-events: none;
+}
+
+/* Stack of 6 tiles */
+#spaghetti-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each tile is one “segment” of pour */
+.spaghetti-tile {
+  width: 100%;
+  height: 320px; /* <— IMPORTANT: this is the segment height */
+  background: url("spaghetti pour.png") no-repeat center / cover;
+  filter: drop-shadow(0 10px 10px rgba(0,0,0,.25));
+  transform-origin: center;
+}
+
+/* Alternate 180° rotation every other tile */
+.spaghetti-tile.t2,
+.spaghetti-tile.t4,
+.spaghetti-tile.t6 {
+  transform: rotate(180deg);
+}
+
 
     /* Meatball pinned on the right */
 
@@ -149,9 +166,15 @@
         <div id="mechanic-stage">
           <!-- Replace these with your real assets -->
           <img id="mechanic-img" src="greasy mechanic.png" alt="Greasy mechanic" />
-          <div id="spaghetti-wrap">
-            <img id="spaghetti-img" src="spaghetti pour.png" alt="Spaghetti pour" />
-          </div>
+          <div id="spaghetti-wrap" aria-hidden="true">
+            <div id="spaghetti-stack">
+              <div class="spaghetti-tile t1"></div>
+              <div class="spaghetti-tile t2"></div>
+              <div class="spaghetti-tile t3"></div>
+              <div class="spaghetti-tile t4"></div>
+              <div class="spaghetti-tile t5"></div>
+              <div class="spaghetti-tile t6"></div>
+            </div>
         </div>
 
         <div style="text-align:center; margin-top: 12px;">
@@ -204,8 +227,11 @@
         meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
 
         // ----- 2) Spaghetti pour reveal (scrubbed) -----
-        const maxPourPx = 320; // adjust to taste
+        const tileHeight = 320;    // must match CSS .spaghetti-tile height
+        const tiles = 6;
+        const maxPourPx = tileHeight * tiles;
         spaghettiWrap.style.height = `${progress * maxPourPx}px`;
+
 
         requestAnimationFrame(tick);
       }
