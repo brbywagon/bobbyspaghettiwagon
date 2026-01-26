@@ -89,33 +89,16 @@
     }
 
     /* Meatball pinned on the right */
-    #meatball {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      position: relative;
-      margin: 0 auto;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.15), rgba(255,255,255,0) 45%),
-        radial-gradient(circle at 55% 70%, rgba(0,0,0,.35), rgba(0,0,0,0) 55%),
-        radial-gradient(circle at 35% 35%, #7a3a2a, #3b1510);
-      box-shadow: 0 18px 40px rgba(0,0,0,.35), inset 0 10px 18px rgba(255,255,255,.08);
-      transform: translateZ(0);
-      will-change: transform, filter;
+
     }
 
     /* A little greasy shine that slides as it “rolls” */
-    #meatball::after{
-      content:"";
-      position:absolute;
-      inset: 18px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 25% 25%, rgba(255,255,255,.22), rgba(255,255,255,0) 55%);
-      transform: translateX(0px);
-      opacity: .9;
-      mix-blend-mode: screen;
-      will-change: transform, opacity;
-    }
+#meatball {
+  width: 220px;
+  height: 220px;
+  background: url("meatball.png") no-repeat center / contain;
+  will-change: transform, filter;
+}
 
     /* Instruction badge */
     .scroll-hint{
@@ -167,9 +150,9 @@
       <div>
         <div id="mechanic-stage">
           <!-- Replace these with your real assets -->
-          <img id="mechanic-img" src="mechanic.png" alt="Greasy mechanic" />
+          <img id="mechanic-img" src="greasy mechanic.png" alt="Greasy mechanic" />
           <div id="spaghetti-wrap">
-            <img id="spaghetti-img" src="spaghetti.png" alt="Spaghetti pour" />
+            <img id="spaghetti-img" src="spaghetti pour.png" alt="Spaghetti pour" />
           </div>
         </div>
 
