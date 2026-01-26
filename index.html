@@ -106,6 +106,50 @@
   transform: rotate(180deg);
 }
 
+/* ============================= */
+/* STORY OVERLAY (ADD THIS HERE) */
+/* ============================= */
+
+#spaghetti-story{
+  position: absolute;
+  inset: 0;
+  z-index: 10;        /* above spaghetti tiles */
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#spaghetti-story .story-inner{
+  width: 92%;
+  margin-top: 10px;
+  color: rgba(255,255,255,.95);
+  text-shadow: 0 2px 10px rgba(0,0,0,.85);
+  line-height: 1.25;
+  font-weight: 700;
+  font-size: 14px;
+
+  background: rgba(0,0,0,.28);
+  border-radius: 10px;
+  padding: 10px 12px;
+  backdrop-filter: blur(2px);
+
+  will-change: transform;
+}
+
+#spaghetti-story h3{
+  margin: 0 0 8px 0;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+#spaghetti-story p{
+  margin: 0 0 10px 0;
+}
+
+/* ============================= */
+/* END STORY OVERLAY CSS         */
+/* ============================= */
 
     /* Meatball pinned on the right */
 
@@ -161,9 +205,6 @@
     </p>
   </div>
 
-  <!-- Scroll-driven interactive scene -->
-  <section id="spaghetti-scene">
-<!-- Scroll-driven interactive scene -->
 <section id="spaghetti-scene">
   <div class="scene-inner">
 
@@ -172,50 +213,34 @@
       <div id="mechanic-stage">
         <img id="mechanic-img" src="greasy mechanic.png" alt="Greasy mechanic" />
 
-<div id="spaghetti-wrap" aria-hidden="true">
-  <div id="spaghetti-stack">
-    <div class="spaghetti-tile t1"></div>
-    <div class="spaghetti-tile t2"></div>
-    <div class="spaghetti-tile t3"></div>
-    <div class="spaghetti-tile t4"></div>
-    <div class="spaghetti-tile t5"></div>
-    <div class="spaghetti-tile t6"></div>
-  </div>
+        <div id="spaghetti-wrap" aria-hidden="true">
+          <div id="spaghetti-stack">
+            <div class="spaghetti-tile t1"></div>
+            <div class="spaghetti-tile t2"></div>
+            <div class="spaghetti-tile t3"></div>
+            <div class="spaghetti-tile t4"></div>
+            <div class="spaghetti-tile t5"></div>
+            <div class="spaghetti-tile t6"></div>
+          </div>
 
-  <!-- STORY OVERLAY -->
-  <div id="spaghetti-story">
-    <div class="story-inner" id="story-inner">
-      <h3>THE SAUCE SCROLLS</h3>
-      <p>
-        The mechanic clenched his jaw like a rusted vise. Somewhere in the dark,
-        a forklift beeped twice—like it knew something.
-      </p>
-      <p>
-        He leaned forward. The air smelled like brake cleaner and destiny.
-        “You ever wonder,” he whispered, “why the spaghetti chooses *you*?”
-      </p>
-      <p>
-        Down it came—hot, unstoppable—like a prophecy with marinara on it.
-      </p>
-      <p>
-        Bobby’s Spaghetti Wagon wasn’t a restaurant. It was a contract.
-        A handshake. A stain that never washes out.
-      </p>
-      <p>
-        And every scroll deeper meant one thing:
-        you were in the sauce now.
-      </p>
-
-      <!-- Add as much text as you want -->
-    </div>
-  </div>
-</div>
-
+          <!-- STORY OVERLAY -->
+          <div id="spaghetti-story">
+            <div class="story-inner" id="story-inner">
+              <h3>THE SAUCE SCROLLS</h3>
+              <p>The mechanic clenched his jaw like a rusted vise. Somewhere in the dark, a forklift beeped twice.</p>
+              <p>He leaned forward. The air smelled like brake cleaner and destiny.</p>
+              <p>Down it came—hot, unstoppable—like a prophecy with marinara on it.</p>
+              <p>Bobby’s Spaghetti Wagon wasn’t a restaurant. It was a contract.</p>
+              <p>And every scroll deeper meant one thing: you were in the sauce now.</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div style="text-align:center; margin-top: 12px;">
         <span class="scroll-hint">⬇️ scroll to pour • ⬆️ scroll to rewind</span>
       </div>
-    </div> <!-- ✅ CLOSE LEFT COLUMN -->
+    </div>
 
     <!-- RIGHT COLUMN -->
     <div>
@@ -225,6 +250,7 @@
 
   </div>
 </section>
+
 
   <script>
     (() => {
