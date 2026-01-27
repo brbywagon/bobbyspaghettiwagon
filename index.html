@@ -178,15 +178,47 @@
     }
 
     /* Mobile tweaks */
-    @media (max-width: 860px){
-      .scene-inner{
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-      #spaghetti-wrap{
-        width: 180px;
-      }
-    }
+@media (max-width: 860px){
+  body { padding: 10px; }
+
+  .scene-inner{
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: start;
+    padding: 10px;
+  }
+
+  /* Put mechanic first, meatball second */
+  .scene-inner > div:first-child { order: 1; }
+  .scene-inner > div:last-child  { order: 2; }
+
+  /* Keep the mechanic stage visible */
+  #mechanic-stage{
+    max-width: 100%;
+  }
+
+  /* Move the pour window down so it stays in view */
+  #spaghetti-wrap{
+    width: 200px;
+    left: 52%;
+    top: 52%;      /* ✅ lower the mouth/pour into view */
+  }
+
+  /* Make meatball smaller so it doesn’t dominate */
+  #meatball{
+    width: 140px;
+    height: 140px;
+  }
+
+  /* Optional: make the meatball row more compact */
+  .scene-inner > div:last-child{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -6px;
+  }
+}
+
   </style>
 </head>
 
