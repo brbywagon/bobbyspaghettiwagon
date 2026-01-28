@@ -48,6 +48,76 @@
       align-items: center;
       padding: 16px;
     }
+/* ===== Second Scene: The Spaghetti Hands Theater ===== */
+#hands-scene{
+  height: 360vh;            /* scroll runway for the sequence */
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto 80px auto;
+}
+
+.hands-inner{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;         /* keeps offscreen slides clean */
+  border-radius: 16px;
+}
+
+/* A subtle backing so images read on top of your background */
+.hands-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+}
+
+/* All the PNG actors live in here */
+.hands-stage{
+  position: absolute;
+  inset: 0;
+}
+
+/* Base actor: me holding spaghetti */
+#meholding{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 110vh); /* starts off screen (below) */
+  width: min(92vw, 950px);
+  height: auto;
+  z-index: 2;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Head actors */
+#head-right,
+#head-left{
+  position: absolute;
+  top: 58%;                  /* adjust to line up mouths under hands */
+  width: min(80vw, 820px);
+  height: auto;
+  z-index: 3;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Start off-screen */
+#head-right{
+  left: 0;
+  transform: translate(-110vw, 0);  /* off left */
+}
+
+#head-left{
+  right: 0;
+  transform: translate(110vw, 0);   /* off right */
+}
+
+/* Mobile tweaks: slightly lower the heads so mouth alignment is visible */
+@media (max-width: 860px){
+  #head-right, #head-left { top: 64%; width: min(92vw, 820px); }
+  #meholding { width: min(96vw, 950px); }
+}
 
     /* Mechanic stage */
     #mechanic-stage {
@@ -264,6 +334,18 @@
   </div>
 </section>
 
+<section id="hands-scene">
+  <div class="hands-inner">
+    <div class="hands-backdrop"></div>
+
+    <div class="hands-stage">
+      <img id="meholding" src="meholding.png" alt="Me holding spaghetti">
+      <img id="head-right" src="headpointright.png" alt="Head pointing right">
+      <img id="head-left"  src="headpointleft.png"  alt="Head pointing left">
+    </div>
+  </div>
+</section>
+
 
 <script>
 (() => {
@@ -272,6 +354,11 @@
   const spaghettiWrap = document.getElementById("spaghetti-wrap");
   const spaghettiStack = document.getElementById("spaghetti-stack");
   const storyInner = document.getElementById("story-inner");
+  const handsScene = document.getElementById("hands-scene");
+  const meHolding = document.getElementById("meholding");
+  const headRight = document.getElementById("head-right");
+  const headLeft  = document.getElementById("head-left");
+
 
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 
@@ -326,7 +413,78 @@
     // ----- 3) Story follows spaghetti (printed on noodles) -----
     if (storyInner) {
       storyInner.style.transform = `translateY(${-offset}px)`;
+    
+    // ===== 4) Hands Scene (meholding + two heads) =====
+if (handsScene && meHolding && headRight && headLeft) {
+  const rect2 = handsScene.getBoundingClientRect();
+  const sceneTop2 = window.scrollY + rect2.top;
+  const sceneH2 = handsScene.offsetHeight;
+  const vh = window.innerHeight;
+
+  const raw2 = (latestScrollY - sceneTop2) / (sceneH2 - vh);
+  const p = clamp(raw2); // 0..1
+
+  // Helpers
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = (t) => t * t * (3 - 2 * t); // smoothstep
+
+  // Phase timing (tweak if you want longer/shorter beats)
+  const p1 = [0.00, 0.25]; // meholding rises in
+  const p2 = [0.25, 0.50]; // head-right enters
+  const p3 = [0.50, 0.75]; // head-left enters
+  const p4 = [0.75, 1.00]; // both heads exit (meholding stays)
+
+  // ---- A) meholding rises from below to centered
+  {
+    const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
+    const y = lerp(110, 0, ease(t)); // vh units
+    meHolding.style.transform = `translate(-50%, ${y}vh)`;
+  }
+
+  // Choose target X positions for the heads (tune these)
+  // Values are in viewport width; adjust until mouths sit under hands.
+  const targetRightXvw = 18;  // move rightward (positive) from its anchor
+  const targetLeftXvw  = -18; // move leftward (negative) from its anchor
+
+  // ---- B) head-right: off-left -> target -> off-left again in p4
+  {
+    // default off-left
+    let xvw = -110;
+
+    if (p < p2[0]) {
+      xvw = -110;
+    } else if (p <= p2[1]) {
+      const t = clamp((p - p2[0]) / (p2[1] - p2[0]));
+      xvw = lerp(-110, targetRightXvw, ease(t));
+    } else if (p <= p4[0]) {
+      xvw = targetRightXvw; // hold
+    } else {
+      const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+      xvw = lerp(targetRightXvw, -110, ease(t));
     }
+
+    headRight.style.transform = `translate(${xvw}vw, 0)`;
+  }
+
+  // ---- C) head-left: off-right -> target -> off-right again in p4
+  {
+    let xvw = 110;
+
+    if (p < p3[0]) {
+      xvw = 110;
+    } else if (p <= p3[1]) {
+      const t = clamp((p - p3[0]) / (p3[1] - p3[0]));
+      xvw = lerp(110, targetLeftXvw, ease(t));
+    } else if (p <= p4[0]) {
+      xvw = targetLeftXvw; // hold
+    } else {
+      const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+      xvw = lerp(targetLeftXvw, 110, ease(t));
+    }
+
+    headLeft.style.transform = `translate(${xvw}vw, 0)`;
+  }
+
 
     requestAnimationFrame(tick);
   }
