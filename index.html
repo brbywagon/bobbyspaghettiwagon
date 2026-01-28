@@ -172,13 +172,14 @@
 /* Alternate 180° rotation every other tile */
 .spaghetti-tile.t2,
 .spaghetti-tile.t4,
-.spaghetti-tile.t6
-.spaghetti-tile.t8
-.spaghetti-tile.t10
-.spaghetti-tile.t12
+.spaghetti-tile.t6,
+.spaghetti-tile.t8,
+.spaghetti-tile.t10,
+.spaghetti-tile.t12,
 .spaghetti-tile.t14 {
   transform: rotate(180deg);
 }
+
 
 /* ============================= */
 /* STORY OVERLAY (ADD THIS HERE) */
@@ -299,6 +300,7 @@
             <div class="spaghetti-tile t8"></div>
             <div class="spaghetti-tile t9"></div>
             <div class="spaghetti-tile t10"></div>
+            <div class="spaghetti-tile t11"></div>
             <div class="spaghetti-tile t12"></div>
             <div class="spaghetti-tile t13"></div>
             <div class="spaghetti-tile t14"></div>
@@ -354,137 +356,123 @@
   const spaghettiWrap = document.getElementById("spaghetti-wrap");
   const spaghettiStack = document.getElementById("spaghetti-stack");
   const storyInner = document.getElementById("story-inner");
+
   const handsScene = document.getElementById("hands-scene");
   const meHolding = document.getElementById("meholding");
   const headRight = document.getElementById("head-right");
   const headLeft  = document.getElementById("head-left");
 
-
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = (t) => t * t * (3 - 2 * t); // smoothstep
 
   let latestScrollY = window.scrollY;
   window.addEventListener("scroll", () => { latestScrollY = window.scrollY; }, { passive: true });
 
+  function sceneProgress(sectionEl){
+    const r = sectionEl.getBoundingClientRect();
+    const top = window.scrollY + r.top;
+    const h = sectionEl.offsetHeight;
+    const vh = window.innerHeight;
+    return clamp((latestScrollY - top) / (h - vh));
+  }
+
   function tick() {
-    if (!scene || !meatball || !spaghettiWrap || !spaghettiStack) {
-      requestAnimationFrame(tick);
-      return;
+    // ----- SPAGHETTI SCENE -----
+    if (scene && meatball && spaghettiWrap && spaghettiStack) {
+      const progress = sceneProgress(scene);
+
+      // 1) Meatball roll
+      const spins = 5;
+      const rot = progress * (spins * 360);
+      const bob = Math.sin(progress * Math.PI * 2) * 6;
+      const squash = 1 - Math.abs(Math.sin(progress * Math.PI)) * 0.04;
+
+      meatball.style.transform =
+        `translateY(${bob}px) rotate(${rot}deg) scaleY(${squash}) scaleX(${1 + (1 - squash)})`;
+
+      const greasiness = 0.95 + progress * 0.15;
+      meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
+
+      // 2) Spaghetti conveyor
+      const tileEl = document.querySelector(".spaghetti-tile");
+      const tileHeight = tileEl ? tileEl.getBoundingClientRect().height : 320;
+      const tiles = 14; // matches your stack
+
+      const totalPour = tileHeight * tiles;
+      const poured = progress * totalPour;
+
+      // grow viewport up to one tile tall
+      const visible = Math.min(poured, tileHeight);
+      spaghettiWrap.style.height = `${visible}px`;
+
+      // slide the stack upward after first tile
+      const maxOffset = totalPour - tileHeight;
+      const offset = Math.min(Math.max(poured - tileHeight, 0), maxOffset);
+
+      spaghettiStack.style.transform = `translateY(${-offset}px)`;
+
+      // 3) Story follows spaghetti
+      if (storyInner) {
+        storyInner.style.transform = `translateY(${-offset}px)`;
+      }
     }
 
-    const rect = scene.getBoundingClientRect();
-    const sceneTop = window.scrollY + rect.top;
-    const sceneHeight = scene.offsetHeight;
-    const viewportH = window.innerHeight;
+    // ----- HANDS SCENE -----
+    if (handsScene && meHolding && headRight && headLeft) {
+      const p = sceneProgress(handsScene);
 
-    // progress: 0 at top of scene, 1 at bottom of scene
-    const raw = (latestScrollY - sceneTop) / (sceneHeight - viewportH);
-    const progress = clamp(raw);
+      // Phase timing
+      const p1 = [0.00, 0.25]; // meholding rises
+      const p2 = [0.25, 0.50]; // head right enters
+      const p3 = [0.50, 0.75]; // head left enters
+      const p4 = [0.75, 1.00]; // heads exit
 
-    // ----- 1) Meatball rolls with scroll -----
-    const spins = 5;
-    const rot = progress * (spins * 360);
-    const bob = Math.sin(progress * Math.PI * 2) * 6;
-    const squash = 1 - Math.abs(Math.sin(progress * Math.PI)) * 0.04;
+      // A) meholding rises from below
+      {
+        const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
+        const y = lerp(110, 0, ease(t)); // vh units
+        meHolding.style.transform = `translate(-50%, ${y}vh)`;
+      }
 
-    meatball.style.transform =
-      `translateY(${bob}px) rotate(${rot}deg) scaleY(${squash}) scaleX(${1 + (1 - squash)})`;
+      // tune these to match "mouth under hands"
+      const targetRightXvw = 18;
+      const targetLeftXvw  = -18;
 
-    const greasiness = 0.95 + progress * 0.15;
-    meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
+      // B) right head slide in/out
+      {
+        let xvw = -110;
+        if (p < p2[0]) {
+          xvw = -110;
+        } else if (p <= p2[1]) {
+          const t = clamp((p - p2[0]) / (p2[1] - p2[0]));
+          xvw = lerp(-110, targetRightXvw, ease(t));
+        } else if (p <= p4[0]) {
+          xvw = targetRightXvw;
+        } else {
+          const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+          xvw = lerp(targetRightXvw, -110, ease(t));
+        }
+        headRight.style.transform = `translate(${xvw}vw, 0)`;
+      }
 
-    // ----- 2) Spaghetti conveyor (6 tiles) -----
-    const tileEl = document.querySelector(".spaghetti-tile");
-    const tileHeight = tileEl ? tileEl.getBoundingClientRect().height : 320;
-    const tiles = 14;
-
-    const totalPour = tileHeight * tiles;
-    const poured = progress * totalPour;
-
-    // Grow viewport up to one tile tall
-    const visible = Math.min(poured, tileHeight);
-    spaghettiWrap.style.height = `${visible}px`;
-
-    // Slide stack upward after first tile
-    const maxOffset = totalPour - tileHeight;
-    const offset = Math.min(Math.max(poured - tileHeight, 0), maxOffset);
-
-    spaghettiStack.style.transform = `translateY(${-offset}px)`;
-
-    // ----- 3) Story follows spaghetti (printed on noodles) -----
-    if (storyInner) {
-      storyInner.style.transform = `translateY(${-offset}px)`;
-    
-    // ===== 4) Hands Scene (meholding + two heads) =====
-if (handsScene && meHolding && headRight && headLeft) {
-  const rect2 = handsScene.getBoundingClientRect();
-  const sceneTop2 = window.scrollY + rect2.top;
-  const sceneH2 = handsScene.offsetHeight;
-  const vh = window.innerHeight;
-
-  const raw2 = (latestScrollY - sceneTop2) / (sceneH2 - vh);
-  const p = clamp(raw2); // 0..1
-
-  // Helpers
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const ease = (t) => t * t * (3 - 2 * t); // smoothstep
-
-  // Phase timing (tweak if you want longer/shorter beats)
-  const p1 = [0.00, 0.25]; // meholding rises in
-  const p2 = [0.25, 0.50]; // head-right enters
-  const p3 = [0.50, 0.75]; // head-left enters
-  const p4 = [0.75, 1.00]; // both heads exit (meholding stays)
-
-  // ---- A) meholding rises from below to centered
-  {
-    const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
-    const y = lerp(110, 0, ease(t)); // vh units
-    meHolding.style.transform = `translate(-50%, ${y}vh)`;
-  }
-
-  // Choose target X positions for the heads (tune these)
-  // Values are in viewport width; adjust until mouths sit under hands.
-  const targetRightXvw = 18;  // move rightward (positive) from its anchor
-  const targetLeftXvw  = -18; // move leftward (negative) from its anchor
-
-  // ---- B) head-right: off-left -> target -> off-left again in p4
-  {
-    // default off-left
-    let xvw = -110;
-
-    if (p < p2[0]) {
-      xvw = -110;
-    } else if (p <= p2[1]) {
-      const t = clamp((p - p2[0]) / (p2[1] - p2[0]));
-      xvw = lerp(-110, targetRightXvw, ease(t));
-    } else if (p <= p4[0]) {
-      xvw = targetRightXvw; // hold
-    } else {
-      const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
-      xvw = lerp(targetRightXvw, -110, ease(t));
+      // C) left head slide in/out
+      {
+        let xvw = 110;
+        if (p < p3[0]) {
+          xvw = 110;
+        } else if (p <= p3[1]) {
+          const t = clamp((p - p3[0]) / (p3[1] - p3[0]));
+          xvw = lerp(110, targetLeftXvw, ease(t));
+        } else if (p <= p4[0]) {
+          xvw = targetLeftXvw;
+        } else {
+          const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+          xvw = lerp(targetLeftXvw, 110, ease(t));
+        }
+        headLeft.style.transform = `translate(${xvw}vw, 0)`;
+      }
     }
-
-    headRight.style.transform = `translate(${xvw}vw, 0)`;
-  }
-
-  // ---- C) head-left: off-right -> target -> off-right again in p4
-  {
-    let xvw = 110;
-
-    if (p < p3[0]) {
-      xvw = 110;
-    } else if (p <= p3[1]) {
-      const t = clamp((p - p3[0]) / (p3[1] - p3[0]));
-      xvw = lerp(110, targetLeftXvw, ease(t));
-    } else if (p <= p4[0]) {
-      xvw = targetLeftXvw; // hold
-    } else {
-      const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
-      xvw = lerp(targetLeftXvw, 110, ease(t));
-    }
-
-    headLeft.style.transform = `translate(${xvw}vw, 0)`;
-  }
-
 
     requestAnimationFrame(tick);
   }
@@ -492,6 +480,7 @@ if (handsScene && meHolding && headRight && headLeft) {
   requestAnimationFrame(tick);
 })();
 </script>
+
 
 </body>
 </html>
