@@ -48,78 +48,142 @@
       align-items: center;
       padding: 16px;
     }
-/* ===== Second Scene: The Spaghetti Hands Theater ===== */
-#hands-scene{
-  height: 450vh;            /* scroll runway for the sequence */
-  position: relative;
-  max-width: 1100px;
-  margin: 0 auto 80px auto;
-  padding-bottom: 250px;   /* ✅ add this (try 120–300px) */
-  box-sizing: border-box;  /* ✅ add this too */
-}
 
-.hands-inner{
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;         /* keeps offscreen slides clean */
-  border-radius: 16px;
-}
+    /* ===== Second Scene: The Spaghetti Hands Theater ===== */
+    #hands-scene{
+      height: 450vh;            /* scroll runway for the sequence */
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto 80px auto;
+      padding-bottom: 250px;   /* ✅ add this (try 120–300px) */
+      box-sizing: border-box;  /* ✅ add this too */
+    }
 
-/* A subtle backing so images read on top of your background */
-.hands-backdrop{
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.25);
-}
+    .hands-inner{
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;         /* keeps offscreen slides clean */
+      border-radius: 16px;
+    }
 
-/* All the PNG actors live in here */
-.hands-stage{
-  position: absolute;
-  inset: 0;
-}
+    /* A subtle backing so images read on top of your background */
+    .hands-backdrop{
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+    }
 
-/* Base actor: me holding spaghetti */
-#meholding{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, 110vh); /* starts off screen (below) */
-  width: min(92vw, 950px);
-  height: auto;
-  z-index: 2;
-  will-change: transform;
-  pointer-events: none;
-}
+    /* All the PNG actors live in here */
+    .hands-stage{
+      position: absolute;
+      inset: 0;
+    }
 
-/* Head actors */
-#head-right,
-#head-left{
-  position: absolute;
-  top: 58%;                  /* adjust to line up mouths under hands */
-  width: min(80vw, 820px);
-  height: auto;
-  z-index: 3;
-  will-change: transform;
-  pointer-events: none;
-}
+    /* Base actor: me holding spaghetti */
+    #meholding{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, 110vh); /* starts off screen (below) */
+      width: min(92vw, 950px);
+      height: auto;
+      z-index: 2;
+      will-change: transform;
+      pointer-events: none;
+    }
 
-/* Start off-screen */
-#head-right{
-  left: 0;
-  transform: translate(-110vw, 0);  /* off left */
-}
+    /* Head actors */
+    #head-right,
+    #head-left{
+      position: absolute;
+      top: 58%;                  /* adjust to line up mouths under hands */
+      width: min(80vw, 820px);
+      height: auto;
+      z-index: 3;
+      will-change: transform;
+      pointer-events: none;
+    }
 
-#head-left{
-  right: 0;
-  transform: translate(110vw, 0);   /* off right */
-}
+    /* Start off-screen */
+    #head-right{
+      left: 0;
+      transform: translate(-110vw, 0);  /* off left */
+    }
 
-/* Mobile tweaks: slightly lower the heads so mouth alignment is visible */
-@media (max-width: 860px){
-  #head-right, #head-left { top: 64%; width: min(92vw, 820px); }
-  #meholding { width: min(96vw, 950px); }
-}
+    #head-left{
+      right: 0;
+      transform: translate(110vw, 0);   /* off right */
+    }
+
+    /* ===== HERO AUTO HANDS SCENE (NEW) ===== */
+    #hands-hero{
+      position: relative;
+      max-width: 1100px;
+      margin: 24px auto 40px auto;
+      height: 85vh;                 /* hero height */
+    }
+
+    #hands-hero .hands-inner{
+      position: relative;           /* NOT sticky */
+      height: 100%;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    #hands-hero .hands-backdrop{
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+    }
+
+    #hands-hero .hands-stage{
+      position: absolute;
+      inset: 0;
+    }
+
+    #meholding-hero{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, 110vh); /* starts offscreen (below) */
+      width: min(92vw, 950px);
+      height: auto;
+      z-index: 2;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    #head-right-hero,
+    #head-left-hero{
+      position: absolute;
+      top: 58%;
+      width: min(80vw, 820px);
+      height: auto;
+      z-index: 3;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    #head-right-hero{
+      left: 0;
+      transform: translate(-110vw, 0);
+    }
+
+    #head-left-hero{
+      right: 0;
+      transform: translate(110vw, 0);
+    }
+
+    /* Mobile tweaks: slightly lower the heads so mouth alignment is visible */
+    @media (max-width: 860px){
+      #head-right, #head-left { top: 64%; width: min(92vw, 820px); }
+      #meholding { width: min(96vw, 950px); }
+
+      #hands-hero{ height: 70vh; }
+      #head-right-hero, #head-left-hero { top: 64%; width: min(92vw, 820px); }
+      #meholding-hero { width: min(96vw, 950px); }
+    }
 
     /* Mechanic stage */
     #mechanic-stage {
@@ -141,102 +205,93 @@
       filter: contrast(1.05) saturate(1.05);
     }
 
-/* Spaghetti reveal wrapper becomes a viewport */
-#spaghetti-wrap {
-  position: absolute;
-  left: 58%;
-  top: 62%;
-  width: 220px;
+    /* Spaghetti reveal wrapper becomes a viewport */
+    #spaghetti-wrap {
+      position: absolute;
+      left: 58%;
+      top: 62%;
+      width: 220px;
 
-  height: 0px;              /* JS will grow up to tileHeight */
-  overflow: hidden;         /* keep it like a viewport */
-  transform: translateX(-50%);
-  will-change: height;
-  pointer-events: none;
-}
+      height: 0px;              /* JS will grow up to tileHeight */
+      overflow: hidden;         /* keep it like a viewport */
+      transform: translateX(-50%);
+      will-change: height;
+      pointer-events: none;
+    }
 
+    /* Stack of tiles */
+    #spaghetti-stack {
+      display: flex;
+      flex-direction: column;
+    }
 
-/* Stack of 6 tiles */
-#spaghetti-stack {
-  display: flex;
-  flex-direction: column;
-}
+    /* Each tile is one “segment” of pour */
+    .spaghetti-tile {
+      width: 100%;
+      height: 320px; /* <— IMPORTANT: this is the segment height */
+      background: url("spaghetti pour.png") no-repeat center / cover;
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,.25));
+      transform-origin: center;
+    }
 
-/* Each tile is one “segment” of pour */
-.spaghetti-tile {
-  width: 100%;
-  height: 320px; /* <— IMPORTANT: this is the segment height */
-  background: url("spaghetti pour.png") no-repeat center / cover;
-  filter: drop-shadow(0 10px 10px rgba(0,0,0,.25));
-  transform-origin: center;
-}
+    /* Alternate 180° rotation every other tile */
+    .spaghetti-tile.t2,
+    .spaghetti-tile.t4,
+    .spaghetti-tile.t6,
+    .spaghetti-tile.t8,
+    .spaghetti-tile.t10,
+    .spaghetti-tile.t12,
+    .spaghetti-tile.t14 {
+      transform: rotate(180deg);
+    }
 
-/* Alternate 180° rotation every other tile */
-.spaghetti-tile.t2,
-.spaghetti-tile.t4,
-.spaghetti-tile.t6,
-.spaghetti-tile.t8,
-.spaghetti-tile.t10,
-.spaghetti-tile.t12,
-.spaghetti-tile.t14 {
-  transform: rotate(180deg);
-}
+    /* ============================= */
+    /* STORY OVERLAY                 */
+    /* ============================= */
+    #spaghetti-story{
+      position: absolute;
+      inset: 0;
+      z-index: 10;        /* above spaghetti tiles */
+      pointer-events: none;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
 
+    #spaghetti-story .story-inner{
+      width: 92%;
+      margin-top: 10px;
+      color: rgba(255,255,255,.95);
+      text-shadow: 0 2px 10px rgba(0,0,0,.85);
+      line-height: 1.25;
+      font-weight: 700;
+      font-size: 20px;
 
-/* ============================= */
-/* STORY OVERLAY (ADD THIS HERE) */
-/* ============================= */
+      background: rgba(0,0,0,.28);
+      border-radius: 10px;
+      padding: 10px 12px;
+      backdrop-filter: blur(2px);
 
-#spaghetti-story{
-  position: absolute;
-  inset: 0;
-  z-index: 10;        /* above spaghetti tiles */
-  pointer-events: none;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
+      will-change: transform;
+    }
 
-#spaghetti-story .story-inner{
-  width: 92%;
-  margin-top: 10px;
-  color: rgba(255,255,255,.95);
-  text-shadow: 0 2px 10px rgba(0,0,0,.85);
-  line-height: 1.25;
-  font-weight: 700;
-  font-size: 20px;
+    #spaghetti-story h3{
+      margin: 0 0 8px 0;
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
 
-  background: rgba(0,0,0,.28);
-  border-radius: 10px;
-  padding: 10px 12px;
-  backdrop-filter: blur(2px);
+    #spaghetti-story p{
+      margin: 0 0 10px 0;
+    }
 
-  will-change: transform;
-}
-
-#spaghetti-story h3{
-  margin: 0 0 8px 0;
-  font-size: 20px;
-  letter-spacing: 1px;
-}
-
-#spaghetti-story p{
-  margin: 0 0 10px 0;
-}
-
-/* ============================= */
-/* END STORY OVERLAY CSS         */
-/* ============================= */
-
-    /* Meatball pinned on the right */
-
-    /* A little greasy shine that slides as it “rolls” */
-#meatball {
-  width: 220px;
-  height: 220px;
-  background: url("meatball.png") no-repeat center / contain;
-  will-change: transform, filter;
-}
+    /* Meatball */
+    #meatball {
+      width: 220px;
+      height: 220px;
+      background: url("meatball.png") no-repeat center / contain;
+      will-change: transform, filter;
+    }
 
     /* Instruction badge */
     .scroll-hint{
@@ -266,6 +321,21 @@
 <body>
   <h1>Welcome to Bobby's Spaghetti Wagon .com</h1>
   <marquee>WHY IS YOUR GRANDMA MADE OF SPAGHETTI?</marquee>
+
+  <!-- ===== HERO: Auto-animated Hands Scene (NEW) ===== -->
+  <section id="hands-hero">
+    <div class="hands-inner">
+      <div class="hands-backdrop"></div>
+      <div class="hands-stage">
+        <img id="meholding-hero" src="meholding.png" alt="Me holding spaghetti (hero)">
+        <img id="head-right-hero" src="headpointright.png" alt="Head pointing right (hero)">
+        <img id="head-left-hero"  src="headpointleft.png"  alt="Head pointing left (hero)">
+      </div>
+    </div>
+    <div style="text-align:center; margin-top: 10px; opacity:.9;">
+      (auto loop demo)
+    </div>
+  </section>
 
   <video width="640" height="360" controls autoplay loop muted>
     <source src="whyisyourgrandmamadeofspaghetti.mp4" type="video/mp4">
@@ -317,8 +387,8 @@
               <p>That’s how I make my first 20 dollars!  With that I buy a can of real tomatoes and two more onions.That night I sleep like a baby in my cardboard box skateboard wagon with many patriot love for this great country.</p>
               <p>In the morning I brush my teeth with spaghetti sauce and  I sell enough spaghetti to go to the government department of Fedex Kinkos and I print a green card, a social security card, a birth certificate (born in Texas ;) and a death certificate for my grandma ;) and certificate for a bachelor of culinary science from the Massachusetts Institute of Spaghetti Technologies (MIST) Valve Victorian, Magma Cum Loud special honors I graduate!</p>
               <p>I then have everything I need to make the most successful spaghetti wagon in the history of the universe. That night I make a dream I get abducted by a sexy alien. She take me up to her space kitchen and show me how to make the perfect spaghetti noodle with grandma spaghetti ashes and she show me how to use a colander to protect my secret recipe thoughts from the Fedex government.</p>
-              <p>I wake up very happy except my bed is wet with spaghetti sauce so I go to work so I can afford a water to clean my hands.<p>
-              <p>That is the whole true story of how bobbyspaghettiwagon.com survive the Y2K.<p>
+              <p>I wake up very happy except my bed is wet with spaghetti sauce so I go to work so I can afford a water to clean my hands.</p>
+              <p>That is the whole true story of how bobbyspaghettiwagon.com survive the Y2K.</p>
             </div>
           </div>
         </div>
@@ -364,6 +434,13 @@
   const headRight = document.getElementById("head-right");
   const headLeft  = document.getElementById("head-left");
 
+  // HERO elements (NEW)
+  const hero = document.getElementById("hands-hero");
+  const meHoldingHero = document.getElementById("meholding-hero");
+  const headRightHero = document.getElementById("head-right-hero");
+  const headLeftHero  = document.getElementById("head-left-hero");
+  const HERO_SECONDS_PER_CYCLE = 10; // tweak speed
+
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const lerp = (a, b, t) => a + (b - a) * t;
   const ease = (t) => t * t * (3 - 2 * t); // smoothstep
@@ -380,6 +457,61 @@
   }
 
   function tick() {
+    // ----- HERO AUTO LOOP (NEW) -----
+    if (hero && meHoldingHero && headRightHero && headLeftHero) {
+      const now = performance.now() / 1000;
+
+      // Triangle wave 0->1->0
+      const phase = (now / HERO_SECONDS_PER_CYCLE) % 1;
+      const p = phase < 0.5 ? (phase * 2) : (2 - phase * 2);
+      const pe = (t) => t * t * (3 - 2 * t); // smoothstep
+
+      const p1 = [0.00, 0.25]; // meholding rises
+      const p2 = [0.25, 0.50]; // head-right enters
+      const p3 = [0.50, 0.75]; // head-left enters
+      const p4 = [0.75, 1.00]; // heads exit
+
+      // A) meholding rises
+      {
+        const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
+        const y = lerp(110, 0, pe(t));
+        meHoldingHero.style.transform = `translate(-50%, ${y}vh)`;
+      }
+
+      const targetRightXvw = 18;
+      const targetLeftXvw  = -18;
+
+      // B) right head in/out
+      {
+        let xvw = -110;
+        if (p < p2[0]) xvw = -110;
+        else if (p <= p2[1]) {
+          const t = clamp((p - p2[0]) / (p2[1] - p2[0]));
+          xvw = lerp(-110, targetRightXvw, pe(t));
+        } else if (p <= p4[0]) xvw = targetRightXvw;
+        else {
+          const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+          xvw = lerp(targetRightXvw, -110, pe(t));
+        }
+        headRightHero.style.transform = `translate(${xvw}vw, 0)`;
+      }
+
+      // C) left head in/out
+      {
+        let xvw = 110;
+        if (p < p3[0]) xvw = 110;
+        else if (p <= p3[1]) {
+          const t = clamp((p - p3[0]) / (p3[1] - p3[0]));
+          xvw = lerp(110, targetLeftXvw, pe(t));
+        } else if (p <= p4[0]) xvw = targetLeftXvw;
+        else {
+          const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+          xvw = lerp(targetLeftXvw, 110, pe(t));
+        }
+        headLeftHero.style.transform = `translate(${xvw}vw, 0)`;
+      }
+    }
+
     // ----- SPAGHETTI SCENE -----
     if (scene && meatball && spaghettiWrap && spaghettiStack) {
       const progress = sceneProgress(scene);
