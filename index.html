@@ -55,7 +55,7 @@
       position: relative;
       max-width: 1100px;
       margin: 0 auto 80px auto;
-      padding-bottom: 250px;   /* ✅ add this (try 120–300px) */
+      padding-bottom: 300px;   /* ✅ add this (try 120–300px) */
       box-sizing: border-box;  /* ✅ add this too */
     }
 
@@ -145,7 +145,7 @@
     #meholding-hero{
       position: absolute;
       left: 50%;
-      top: 30%;
+      top: 20%;
       transform: translate(-50%, 150vh); /* starts offscreen (below) */
       width: min(92vw, 950px);
       height: auto;
@@ -157,7 +157,7 @@
     #head-right-hero,
     #head-left-hero{
       position: absolute;
-      top: 40%;
+      top: 35%;
       width: min(80vw, 820px);
       height: auto;
       z-index: 3;
@@ -177,11 +177,11 @@
 
     /* Mobile tweaks: slightly lower the heads so mouth alignment is visible */
     @media (max-width: 860px){
-      #head-right, #head-left { top: 64%; width: min(92vw, 820px); }
+      #head-right, #head-left { top: 50%; width: min(92vw, 820px); }
       #meholding { width: min(96vw, 950px); }
 
       #hands-hero{ height: 70vh; }
-      #head-right-hero, #head-left-hero { top: 64%; width: min(92vw, 820px); }
+      #head-right-hero, #head-left-hero { top: 50%; width: min(92vw, 820px); }
       #meholding-hero { width: min(96vw, 950px); }
     }
 
