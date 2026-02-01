@@ -388,6 +388,7 @@
       display: flex;
       align-items: flex-start;
       justify-content: center;
+      will-change: transform;
     }
 
     #spaghetti-story .story-inner{
@@ -723,10 +724,18 @@
         spaghettiStack.style.transform = `translateY(${-offset}px)`;
 
         // Story: follow noodles on desktop, stay readable on mobile
-        if (storyInner) {
-          const isMobile = window.matchMedia("(max-width: 860px)").matches;
-          storyInner.style.transform = isMobile ? "translateY(0)" : `translateY(${-offset}px)`;
-        }
+      const storyEl = document.getElementById("spaghetti-story");
+
+      // Move the whole story overlay with the noodles (desktop + mobile)
+      if (storyEl) {
+      storyEl.style.transform = `translateY(${-offset}px)`;
+      }
+
+// Keep the inner text “stable” (so mobile inner scrolling behaves nicely)
+if (storyInner) {
+  storyInner.style.transform = "translateY(0)";
+}
+
       } // ✅ CLOSES spaghetti scene block (this was broken)
 
       // HANDS SCENE (scroll-driven)
