@@ -49,7 +49,6 @@
       gap: 18px;
       align-items: center;
       padding: 16px;
-
       box-sizing: border-box;
     }
 
@@ -263,10 +262,7 @@
       opacity: 0.95;
     }
 
-    .field{
-      display: block;
-      margin-bottom: 12px;
-    }
+    .field{ display: block; margin-bottom: 12px; }
 
     .label{
       display: block;
@@ -415,11 +411,9 @@
       letter-spacing: 1px;
     }
 
-    #spaghetti-story p{
-      margin: 0 0 10px 0;
-    }
+    #spaghetti-story p{ margin: 0 0 10px 0; }
 
-    /* ✅ Meatball now sticks to the right edge of the spaghetti/story scene */
+    /* ✅ Meatball attached to mechanic/story scene */
     #meatball{
       position: absolute;
       right: 10px;
@@ -432,17 +426,6 @@
       will-change: transform, filter;
     }
 
-    .scroll-hint{
-      text-align:center;
-      font-size: 14px;
-      opacity: .9;
-      margin-top: 10px;
-      background: rgba(0,0,0,.55);
-      padding: 10px 12px;
-      border-radius: 999px;
-      display:inline-block;
-    }
-
     /* Mobile tweaks */
     @media (max-width: 860px){
       .scene-inner{
@@ -451,31 +434,31 @@
         height: auto;
       }
 
-      #spaghetti-wrap{
-        width: 180px;
-      }
+      #spaghetti-wrap{ width: 180px; }
 
-      /* smaller meatball on mobile */
       #meatball{
         width: 120px;
         height: 120px;
         right: 6px;
         top: 58%;
       }
-       /* Let touches interact with the story overlay */
-  #spaghetti-story{
-    pointer-events: auto;
-  }
 
-  /* Make the story text itself scrollable */
-  #spaghetti-story .story-inner{
-    pointer-events: auto;
-    max-height: 62vh;              /* adjust 50–70vh to taste */
-    overflow: auto;                /* ✅ internal scroll */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;  /* ✅ prevents page scroll stealing */
-    touch-action: pan-y;
-  }
+      /* Let touches interact with the story overlay */
+      #spaghetti-story{ pointer-events: auto; }
+
+      /* Make the story text itself scrollable */
+      #spaghetti-story .story-inner{
+        pointer-events: auto;
+        max-height: 62vh;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        touch-action: pan-y;
+
+        /* keep story text from hiding behind the meatball */
+        width: calc(92% - 56px);
+        margin-right: 56px;
+      }
 
       #head-right, #head-left { top: 50%; width: min(92vw, 820px); }
       #meholding { width: min(96vw, 950px); }
@@ -484,18 +467,8 @@
       #head-right-hero, #head-left-hero { top: 50%; width: min(92vw, 820px); }
       #meholding-hero { width: min(96vw, 950px); }
 
-      #reviews-feed-panel .panel-body{
-        max-height: 42vh;
-      }
-      #reviews-form-panel .panel-body{
-        max-height: 46vh;
-      }
-
-      /* optional: keep story text from hiding behind the meatball */
-      #spaghetti-story .story-inner{
-        width: calc(92% - 56px);
-        margin-right: 56px;
-      }
+      #reviews-feed-panel .panel-body{ max-height: 42vh; }
+      #reviews-form-panel .panel-body{ max-height: 46vh; }
     }
   </style>
 </head>
@@ -504,7 +477,6 @@
   <h1>Welcome to Bobby's Spaghetti Wagon .com</h1>
   <marquee>WHY IS YOUR GRANDMA MADE OF SPAGHETTI?</marquee>
 
-  <!-- ===== HERO: Auto-animated Hands Scene ===== -->
   <section id="hands-hero">
     <div class="hands-inner">
       <div class="hands-backdrop"></div>
@@ -531,11 +503,9 @@
     </p>
   </div>
 
-  <!-- ===== SPAGHETTI SCENE ===== -->
   <section id="spaghetti-scene">
     <div class="scene-inner">
 
-      <!-- ✅ LEFT COLUMN (mechanic) -->
       <div>
         <div id="mechanic-stage">
           <img id="mechanic-img" src="bobby barf (2).png" alt="Greasy mechanic" />
@@ -558,7 +528,6 @@
               <div class="spaghetti-tile t14"></div>
             </div>
 
-            <!-- STORY OVERLAY -->
             <div id="spaghetti-story">
               <div class="story-inner" id="story-inner">
                 <h3>This a my story!</h3>
@@ -573,12 +542,10 @@
             </div>
           </div>
 
-          <!-- ✅ Meatball is now attached to the story scene -->
           <div id="meatball" aria-label="Meatball"></div>
         </div>
       </div>
 
-      <!-- ✅ RIGHT SIDEBAR (reviews only now) -->
       <div id="right-sidebar">
         <aside id="reviews-column" aria-label="Bobby Spaghetti Wagon reviews">
 
@@ -627,11 +594,9 @@
     </div>
   </section>
 
-  <!-- ===== HANDS SCROLL SCENE ===== -->
   <section id="hands-scene">
     <div class="hands-inner">
       <div class="hands-backdrop"></div>
-
       <div class="hands-stage">
         <img id="meholding" src="meholding.png" alt="Me holding spaghetti">
         <img id="head-right" src="headpointright.png" alt="Head pointing right">
@@ -653,7 +618,6 @@
     const headRight = document.getElementById("head-right");
     const headLeft  = document.getElementById("head-left");
 
-    // HERO elements
     const hero = document.getElementById("hands-hero");
     const meHoldingHero = document.getElementById("meholding-hero");
     const headRightHero = document.getElementById("head-right-hero");
@@ -662,7 +626,7 @@
 
     const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
     const lerp = (a, b, t) => a + (b - a) * t;
-    const ease = (t) => t * t * (3 - 2 * t); // smoothstep
+    const ease = (t) => t * t * (3 - 2 * t);
 
     let latestScrollY = window.scrollY;
     window.addEventListener("scroll", () => { latestScrollY = window.scrollY; }, { passive: true });
@@ -730,7 +694,7 @@
       if (scene && meatball && spaghettiWrap && spaghettiStack) {
         const progress = sceneProgress(scene);
 
-        // Meatball roll (✅ keep it centered with -50%)
+        // Meatball roll (base is translateY(-50%) because top:50%)
         const spins = 5;
         const rot = progress * (spins * 360);
         const bob = Math.sin(progress * Math.PI * 2) * 6;
@@ -758,17 +722,12 @@
 
         spaghettiStack.style.transform = `translateY(${-offset}px)`;
 
-if (storyInner) {
-  const isMobile = window.matchMedia("(max-width: 860px)").matches;
-
-  // On mobile: keep story readable + scrollable (don't drag it with noodles)
-  if (isMobile) {
-    storyInner.style.transform = "translateY(0)";
-  } else {
-    // Desktop: keep the “printed on noodles” behavior
-    storyInner.style.transform = `translateY(${-offset}px)`;
-  }
-}
+        // Story: follow noodles on desktop, stay readable on mobile
+        if (storyInner) {
+          const isMobile = window.matchMedia("(max-width: 860px)").matches;
+          storyInner.style.transform = isMobile ? "translateY(0)" : `translateY(${-offset}px)`;
+        }
+      } // ✅ CLOSES spaghetti scene block (this was broken)
 
       // HANDS SCENE (scroll-driven)
       if (handsScene && meHolding && headRight && headLeft) {
@@ -965,6 +924,5 @@ if (storyInner) {
 
   renderReviews();
   </script>
-
 </body>
 </html>
