@@ -29,9 +29,8 @@
     }
 
     /* --------- Scroll Scene --------- */
-    /* This creates “scroll distance” to drive the animation */
     #spaghetti-scene {
-      height: 1000vh;            /* more = longer pour */
+      height: 1000vh;
       position: relative;
       max-width: 1100px;
       margin: 40px auto 0 auto;
@@ -43,49 +42,66 @@
       top: 0;
       height: 100vh;
       display: grid;
-      grid-template-columns: 1fr 260px;
+
+      /* ✅ WIDEN RIGHT COLUMN for reviews + form */
+      grid-template-columns: 1fr minmax(320px, 460px);
+
       gap: 18px;
       align-items: center;
       padding: 16px;
+
+      box-sizing: border-box;
+    }
+
+    /* ✅ Right sidebar stack: (reviews panels) + (meatball) */
+    #right-sidebar{
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 16px;
+      min-height: 0; /* enables internal scroll areas to work */
+    }
+
+    #meatball-wrap{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 6px 0 0 0;
     }
 
     /* ===== Second Scene: The Spaghetti Hands Theater ===== */
     #hands-scene{
-      height: 450vh;            /* scroll runway for the sequence */
+      height: 450vh;
       position: relative;
       max-width: 1100px;
       margin: 0 auto 80px auto;
-      padding-bottom: 300px;   /* ✅ add this (try 120–300px) */
-      box-sizing: border-box;  /* ✅ add this too */
+      padding-bottom: 300px;
+      box-sizing: border-box;
     }
 
     .hands-inner{
       position: sticky;
       top: 0;
       height: 100vh;
-      overflow: hidden;         /* keeps offscreen slides clean */
+      overflow: hidden;
       border-radius: 16px;
     }
 
-    /* A subtle backing so images read on top of your background */
     .hands-backdrop{
       position: absolute;
       inset: 0;
       background: rgba(0,0,0,0.25);
     }
 
-    /* All the PNG actors live in here */
     .hands-stage{
       position: absolute;
       inset: 0;
     }
 
-    /* Base actor: me holding spaghetti */
     #meholding{
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, 110vh); /* starts off screen (below) */
+      transform: translate(-50%, 110vh);
       width: min(92vw, 950px);
       height: auto;
       z-index: 2;
@@ -93,11 +109,10 @@
       pointer-events: none;
     }
 
-    /* Head actors */
     #head-right,
     #head-left{
       position: absolute;
-      top: 58%;                  /* adjust to line up mouths under hands */
+      top: 58%;
       width: min(80vw, 820px);
       height: auto;
       z-index: 3;
@@ -105,30 +120,33 @@
       pointer-events: none;
     }
 
-    /* Start off-screen */
     #head-right{
       left: 0;
-      transform: translate(-110vw, 0);  /* off left */
+      transform: translate(-110vw, 0);
     }
 
     #head-left{
       right: 0;
-      transform: translate(110vw, 0);   /* off right */
+      transform: translate(110vw, 0);
     }
 
-    /* ===== HERO AUTO HANDS SCENE (NEW) ===== */
+    /* ===== HERO AUTO HANDS SCENE ===== */
     #hands-hero{
       position: relative;
       max-width: 1100px;
       margin: 24px auto 40px auto;
-      height: 120vh;                 /* hero height */
+      height: 120vh;
     }
 
     #hands-hero .hands-inner{
-      position: relative;           /* NOT sticky */
+      position: relative;
       height: 100%;
       overflow: hidden;
       border-radius: 16px;
+
+      /* ✅ give a little internal breathing room */
+      padding-bottom: 10vh;
+      box-sizing: border-box;
     }
 
     #hands-hero .hands-backdrop{
@@ -146,7 +164,7 @@
       position: absolute;
       left: 50%;
       top: 20%;
-      transform: translate(-50%, 150vh); /* starts offscreen (below) */
+      transform: translate(-50%, 150vh);
       width: min(92vw, 950px);
       height: auto;
       z-index: 2;
@@ -175,14 +193,147 @@
       transform: translate(110vw, 0);
     }
 
-    /* Mobile tweaks: slightly lower the heads so mouth alignment is visible */
-    @media (max-width: 860px){
-      #head-right, #head-left { top: 50%; width: min(92vw, 820px); }
-      #meholding { width: min(96vw, 950px); }
+    /* ===== Reviews Column: two windows stacked ===== */
+    #reviews-column{
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+      min-height: 70vh;
+      min-height: 0;
+    }
 
-      #hands-hero{ height: 70vh; }
-      #head-right-hero, #head-left-hero { top: 50%; width: min(92vw, 820px); }
-      #meholding-hero { width: min(96vw, 950px); }
+    .panel{
+      border-radius: 16px;
+      background: rgba(0,0,0,0.45);
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .panel-header{
+      padding: 14px 14px 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.35);
+    }
+
+    .panel-title{
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      font-size: 15px;
+    }
+
+    .panel-sub{
+      font-size: 12px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    .panel-body{
+      padding: 12px 14px 14px 14px;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      flex: 1;
+    }
+
+    .review{
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 12px;
+      padding: 10px 10px;
+      margin-bottom: 10px;
+    }
+
+    .review-top{
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+
+    .review-name{
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .review-time{
+      font-size: 11px;
+      opacity: 0.8;
+      white-space: nowrap;
+    }
+
+    .review-text{
+      font-size: 13px;
+      line-height: 1.3;
+      opacity: 0.95;
+    }
+
+    .field{
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .label{
+      display: block;
+      font-size: 12px;
+      opacity: 0.9;
+      margin-bottom: 6px;
+    }
+
+    input, textarea{
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.25);
+      color: white;
+      padding: 10px 10px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    textarea{ resize: vertical; }
+
+    .counter{
+      font-size: 12px;
+      opacity: 0.85;
+      margin-top: 6px;
+      text-align: right;
+    }
+
+    .form-row{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button{
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    #submit-review{
+      background: rgba(255,255,255,0.92);
+      color: black;
+    }
+
+    button.secondary{
+      background: rgba(255,255,255,0.14);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .fineprint{
+      margin-top: 10px;
+      font-size: 11px;
+      opacity: 0.75;
+      line-height: 1.2;
     }
 
     /* Mechanic stage */
@@ -197,7 +348,6 @@
       box-shadow: 0 16px 40px rgba(0,0,0,.35);
     }
 
-    /* Mechanic image (base) */
     #mechanic-img {
       width: 100%;
       height: auto;
@@ -205,36 +355,32 @@
       filter: contrast(1.05) saturate(1.05);
     }
 
-    /* Spaghetti reveal wrapper becomes a viewport */
+    /* Spaghetti reveal wrapper */
     #spaghetti-wrap {
       position: absolute;
       left: 52%;
       top: 50%;
       width: 220px;
-
-      height: 0px;              /* JS will grow up to tileHeight */
-      overflow: hidden;         /* keep it like a viewport */
+      height: 0px;
+      overflow: hidden;
       transform: translateX(-50%);
       will-change: height;
       pointer-events: none;
     }
 
-    /* Stack of tiles */
     #spaghetti-stack {
       display: flex;
       flex-direction: column;
     }
 
-    /* Each tile is one “segment” of pour */
     .spaghetti-tile {
       width: 100%;
-      height: 320px; /* <— IMPORTANT: this is the segment height */
+      height: 320px;
       background: url("spaghetti pour.png") no-repeat center / cover;
       filter: drop-shadow(0 10px 10px rgba(0,0,0,.25));
       transform-origin: center;
     }
 
-    /* Alternate 180° rotation every other tile */
     .spaghetti-tile.t2,
     .spaghetti-tile.t4,
     .spaghetti-tile.t6,
@@ -245,13 +391,11 @@
       transform: rotate(180deg);
     }
 
-    /* ============================= */
-    /* STORY OVERLAY                 */
-    /* ============================= */
+    /* STORY OVERLAY */
     #spaghetti-story{
       position: absolute;
       inset: 0;
-      z-index: 10;        /* above spaghetti tiles */
+      z-index: 10;
       pointer-events: none;
       display: flex;
       align-items: flex-start;
@@ -266,12 +410,10 @@
       line-height: 1.25;
       font-weight: 700;
       font-size: 20px;
-
       background: rgba(0,0,0,.28);
       border-radius: 10px;
       padding: 10px 12px;
       backdrop-filter: blur(2px);
-
       will-change: transform;
     }
 
@@ -293,7 +435,6 @@
       will-change: transform, filter;
     }
 
-    /* Instruction badge */
     .scroll-hint{
       text-align:center;
       font-size: 14px;
@@ -310,9 +451,29 @@
       .scene-inner{
         grid-template-columns: 1fr;
         gap: 14px;
+        height: auto;
       }
+
+      #right-sidebar{
+        grid-template-rows: auto auto;
+      }
+
       #spaghetti-wrap{
         width: 180px;
+      }
+
+      #head-right, #head-left { top: 50%; width: min(92vw, 820px); }
+      #meholding { width: min(96vw, 950px); }
+
+      #hands-hero{ height: 70vh; }
+      #head-right-hero, #head-left-hero { top: 50%; width: min(92vw, 820px); }
+      #meholding-hero { width: min(96vw, 950px); }
+
+      #reviews-feed-panel .panel-body{
+        max-height: 42vh;
+      }
+      #reviews-form-panel .panel-body{
+        max-height: 46vh;
       }
     }
   </style>
@@ -322,7 +483,7 @@
   <h1>Welcome to Bobby's Spaghetti Wagon .com</h1>
   <marquee>WHY IS YOUR GRANDMA MADE OF SPAGHETTI?</marquee>
 
-  <!-- ===== HERO: Auto-animated Hands Scene (NEW) ===== -->
+  <!-- ===== HERO: Auto-animated Hands Scene ===== -->
   <section id="hands-hero">
     <div class="hands-inner">
       <div class="hands-backdrop"></div>
@@ -331,9 +492,6 @@
         <img id="head-right-hero" src="headpointright.png" alt="Head pointing right (hero)">
         <img id="head-left-hero"  src="headpointleft.png"  alt="Head pointing left (hero)">
       </div>
-    </div>
-    <div style="text-align:center; margin-top: 10px; opacity:.9;">
-      
     </div>
   </section>
 
@@ -352,269 +510,441 @@
     </p>
   </div>
 
-<section id="spaghetti-scene">
-  <div class="scene-inner">
+  <!-- ===== SPAGHETTI SCENE ===== -->
+  <section id="spaghetti-scene">
+    <div class="scene-inner">
 
-    <!-- LEFT COLUMN -->
-    <div>
-      <div id="mechanic-stage">
-        <img id="mechanic-img" src="bobby barf (2).png" alt="Greasy mechanic" />
+      <!-- ✅ LEFT COLUMN (mechanic) -->
+      <div>
+        <div id="mechanic-stage">
+          <img id="mechanic-img" src="bobby barf (2).png" alt="Greasy mechanic" />
 
-        <div id="spaghetti-wrap" aria-hidden="true">
-          <div id="spaghetti-stack">
-            <div class="spaghetti-tile t1"></div>
-            <div class="spaghetti-tile t2"></div>
-            <div class="spaghetti-tile t3"></div>
-            <div class="spaghetti-tile t4"></div>
-            <div class="spaghetti-tile t5"></div>
-            <div class="spaghetti-tile t6"></div>
-            <div class="spaghetti-tile t7"></div>
-            <div class="spaghetti-tile t8"></div>
-            <div class="spaghetti-tile t9"></div>
-            <div class="spaghetti-tile t10"></div>
-            <div class="spaghetti-tile t11"></div>
-            <div class="spaghetti-tile t12"></div>
-            <div class="spaghetti-tile t13"></div>
-            <div class="spaghetti-tile t14"></div>
-          </div>
+          <div id="spaghetti-wrap" aria-hidden="true">
+            <div id="spaghetti-stack">
+              <div class="spaghetti-tile t1"></div>
+              <div class="spaghetti-tile t2"></div>
+              <div class="spaghetti-tile t3"></div>
+              <div class="spaghetti-tile t4"></div>
+              <div class="spaghetti-tile t5"></div>
+              <div class="spaghetti-tile t6"></div>
+              <div class="spaghetti-tile t7"></div>
+              <div class="spaghetti-tile t8"></div>
+              <div class="spaghetti-tile t9"></div>
+              <div class="spaghetti-tile t10"></div>
+              <div class="spaghetti-tile t11"></div>
+              <div class="spaghetti-tile t12"></div>
+              <div class="spaghetti-tile t13"></div>
+              <div class="spaghetti-tile t14"></div>
+            </div>
 
-          <!-- STORY OVERLAY -->
-          <div id="spaghetti-story">
-            <div class="story-inner" id="story-inner">
-              <h3>This a my story!</h3>
-              <p>I came to this country with only one spaghetti noodle in my pocket. I had to use it for a shoe lace in my boot. I had no choice, I had nothing else. I had to cut my only spaghetti noodle in half and use one half a noodle for each boot lace and I pulled myself up by my boot spaghetties.</p>
-              <p>Bobbyspaghetti wagon .com start as a cardboard box I push on a skateboard. In 1997 I sell my watch to buy one onion and a ketchup and I make a noodle with my hands using ashes of a grandma made of spaghetti. I don’t tell no one but everyone love a spaghetti made of grandma made of spaghetti ashes.</p>
-              <p>That’s how I make my first 20 dollars!  With that I buy a can of real tomatoes and two more onions.That night I sleep like a baby in my cardboard box skateboard wagon with many patriot love for this great country.</p>
-              <p>In the morning I brush my teeth with spaghetti sauce and  I sell enough spaghetti to go to the government department of Fedex Kinkos and I print a green card, a social security card, a birth certificate (born in Texas ;) and a death certificate for my grandma ;) and certificate for a bachelor of culinary science from the Massachusetts Institute of Spaghetti Technologies (MIST) Valve Victorian, Magma Cum Loud special honors I graduate!</p>
-              <p>I then have everything I need to make the most successful spaghetti wagon in the history of the universe. That night I make a dream I get abducted by a sexy alien. She take me up to her space kitchen and show me how to make the perfect spaghetti noodle with grandma spaghetti ashes and she show me how to use a colander to protect my secret recipe thoughts from the Fedex government.</p>
-              <p>I wake up very happy except my bed is wet with spaghetti sauce so I go to work so I can afford a water to clean my hands.</p>
-              <p>That is the whole true story of how bobbyspaghettiwagon.com survive the Y2K.</p>
+            <!-- STORY OVERLAY -->
+            <div id="spaghetti-story">
+              <div class="story-inner" id="story-inner">
+                <h3>This a my story!</h3>
+                <p>I came to this country with only one spaghetti noodle in my pocket. I had to use it for a shoe lace in my boot. I had no choice, I had nothing else. I had to cut my only spaghetti noodle in half and use one half a noodle for each boot lace and I pulled myself up by my boot spaghetties.</p>
+                <p>Bobbyspaghetti wagon .com start as a cardboard box I push on a skateboard. In 1997 I sell my watch to buy one onion and a ketchup and I make a noodle with my hands using ashes of a grandma made of spaghetti. I don’t tell no one but everyone love a spaghetti made of grandma made of spaghetti ashes.</p>
+                <p>That’s how I make my first 20 dollars!  With that I buy a can of real tomatoes and two more onions.That night I sleep like a baby in my cardboard box skateboard wagon with many patriot love for this great country.</p>
+                <p>In the morning I brush my teeth with spaghetti sauce and  I sell enough spaghetti to go to the government department of Fedex Kinkos and I print a green card, a social security card, a birth certificate (born in Texas ;) and a death certificate for my grandma ;) and certificate for a bachelor of culinary science from the Massachusetts Institute of Spaghetti Technologies (MIST) Valve Victorian, Magma Cum Loud special honors I graduate!</p>
+                <p>I then have everything I need to make the most successful spaghetti wagon in the history of the universe. That night I make a dream I get abducted by a sexy alien. She take me up to her space kitchen and show me how to make the perfect spaghetti noodle with grandma spaghetti ashes and she show me how to use a colander to protect my secret recipe thoughts from the Fedex government.</p>
+                <p>I wake up very happy except my bed is wet with spaghetti sauce so I go to work so I can afford a water to clean my hands.</p>
+                <p>That is the whole true story of how bobbyspaghettiwagon.com survive the Y2K.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div style="text-align:center; margin-top: 12px;">
-        <span class="scroll-hint"></span>
+      <!-- ✅ RIGHT SIDEBAR (reviews + meatball) -->
+      <div id="right-sidebar">
+
+        <aside id="reviews-column" aria-label="Bobby Spaghetti Wagon reviews">
+
+          <!-- WINDOW 1: What they say -->
+          <section class="panel" id="reviews-feed-panel">
+            <div class="panel-header">
+              <div class="panel-title">what they say about a bobby spaghetti wagon.com</div>
+              <div class="panel-sub">Most recent at the top • scroll for the ancient sauce</div>
+            </div>
+
+            <div class="panel-body" id="reviews-feed" role="log" aria-live="polite"></div>
+          </section>
+
+          <!-- WINDOW 2: Submit form -->
+          <section class="panel" id="reviews-form-panel">
+            <div class="panel-header">
+              <div class="panel-title">Say a nice special 100 % stars and suggestions for the worlds best Bobby Spaghetti wagon.com</div>
+              <div class="panel-sub">Name + comment (100 words max). Submits instantly into the window above.</div>
+            </div>
+
+            <div class="panel-body">
+              <form id="review-form" autocomplete="on">
+                <label class="field">
+                  <span class="label">Your name</span>
+                  <input id="reviewer-name" type="text" maxlength="40" placeholder="e.g., Tony Saucehands" required>
+                </label>
+
+                <label class="field">
+                  <span class="label">Your nice special comment (100 words max)</span>
+                  <textarea id="reviewer-comment" rows="5" placeholder="Tell the truth about the sauce…" required></textarea>
+                  <div class="counter"><span id="word-count">0</span>/100 words</div>
+                </label>
+
+                <div class="form-row">
+                  <button type="submit" id="submit-review">Submit 100% Stars</button>
+                  <button type="button" id="clear-my-reviews" class="secondary">Clear my device reviews</button>
+                </div>
+
+                <div class="fineprint">
+                  Note: without a server, submissions save on <b>your device</b> only (localStorage).
+                </div>
+              </form>
+            </div>
+          </section>
+
+        </aside>
+
+        <div id="meatball-wrap">
+          <div id="meatball" aria-label="Meatball"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== HANDS SCROLL SCENE ===== -->
+  <section id="hands-scene">
+    <div class="hands-inner">
+      <div class="hands-backdrop"></div>
+
+      <div class="hands-stage">
+        <img id="meholding" src="meholding.png" alt="Me holding spaghetti">
+        <img id="head-right" src="headpointright.png" alt="Head pointing right">
+        <img id="head-left"  src="headpointleft.png"  alt="Head pointing left">
       </div>
     </div>
+  </section>
 
-    <!-- RIGHT COLUMN -->
-    <div>
-      <div id="meatball" aria-label="Meatball"></div>
-      <div style="text-align:center; margin-top: 10px; opacity:.9;"></div>
-    </div>
+  <script>
+  (() => {
+    const scene = document.getElementById("spaghetti-scene");
+    const meatball = document.getElementById("meatball");
+    const spaghettiWrap = document.getElementById("spaghetti-wrap");
+    const spaghettiStack = document.getElementById("spaghetti-stack");
+    const storyInner = document.getElementById("story-inner");
 
-  </div>
-</section>
+    const handsScene = document.getElementById("hands-scene");
+    const meHolding = document.getElementById("meholding");
+    const headRight = document.getElementById("head-right");
+    const headLeft  = document.getElementById("head-left");
 
-<section id="hands-scene">
-  <div class="hands-inner">
-    <div class="hands-backdrop"></div>
+    // HERO elements
+    const hero = document.getElementById("hands-hero");
+    const meHoldingHero = document.getElementById("meholding-hero");
+    const headRightHero = document.getElementById("head-right-hero");
+    const headLeftHero  = document.getElementById("head-left-hero");
+    const HERO_SECONDS_PER_CYCLE = 10;
 
-    <div class="hands-stage">
-      <img id="meholding" src="meholding.png" alt="Me holding spaghetti">
-      <img id="head-right" src="headpointright.png" alt="Head pointing right">
-      <img id="head-left"  src="headpointleft.png"  alt="Head pointing left">
-    </div>
-  </div>
-</section>
+    const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const ease = (t) => t * t * (3 - 2 * t); // smoothstep
 
+    let latestScrollY = window.scrollY;
+    window.addEventListener("scroll", () => { latestScrollY = window.scrollY; }, { passive: true });
 
-<script>
-(() => {
-  const scene = document.getElementById("spaghetti-scene");
-  const meatball = document.getElementById("meatball");
-  const spaghettiWrap = document.getElementById("spaghetti-wrap");
-  const spaghettiStack = document.getElementById("spaghetti-stack");
-  const storyInner = document.getElementById("story-inner");
-
-  const handsScene = document.getElementById("hands-scene");
-  const meHolding = document.getElementById("meholding");
-  const headRight = document.getElementById("head-right");
-  const headLeft  = document.getElementById("head-left");
-
-  // HERO elements (NEW)
-  const hero = document.getElementById("hands-hero");
-  const meHoldingHero = document.getElementById("meholding-hero");
-  const headRightHero = document.getElementById("head-right-hero");
-  const headLeftHero  = document.getElementById("head-left-hero");
-  const HERO_SECONDS_PER_CYCLE = 10; // tweak speed
-
-  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const ease = (t) => t * t * (3 - 2 * t); // smoothstep
-
-  let latestScrollY = window.scrollY;
-  window.addEventListener("scroll", () => { latestScrollY = window.scrollY; }, { passive: true });
-
-  function sceneProgress(sectionEl){
-    const r = sectionEl.getBoundingClientRect();
-    const top = window.scrollY + r.top;
-    const h = sectionEl.offsetHeight;
-    const vh = window.innerHeight;
-    return clamp((latestScrollY - top) / (h - vh));
-  }
-
-  function tick() {
-    // ----- HERO AUTO LOOP (NEW) -----
-    if (hero && meHoldingHero && headRightHero && headLeftHero) {
-      const now = performance.now() / 1000;
-
-      // Triangle wave 0->1->0
-      const phase = (now / HERO_SECONDS_PER_CYCLE) % 1;
-      const p = phase < 0.5 ? (phase * 2) : (2 - phase * 2);
-      const pe = (t) => t * t * (3 - 2 * t); // smoothstep
-
-      const p1 = [0.00, 0.25]; // meholding rises
-      const p2 = [0.25, 0.50]; // head-right enters
-      const p3 = [0.50, 0.75]; // head-left enters
-      const p4 = [0.75, 1.00]; // heads exit
-
-      // A) meholding rises
-      {
-        const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
-        const y = lerp(110, 0, pe(t));
-        meHoldingHero.style.transform = `translate(-50%, ${y}vh)`;
-      }
-
-      const targetRightXvw = 18;
-      const targetLeftXvw  = -18;
-
-      // B) right head in/out
-      {
-        let xvw = -110;
-        if (p < p2[0]) xvw = -110;
-        else if (p <= p2[1]) {
-          const t = clamp((p - p2[0]) / (p2[1] - p2[0]));
-          xvw = lerp(-110, targetRightXvw, pe(t));
-        } else if (p <= p4[0]) xvw = targetRightXvw;
-        else {
-          const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
-          xvw = lerp(targetRightXvw, -110, pe(t));
-        }
-        headRightHero.style.transform = `translate(${xvw}vw, 0)`;
-      }
-
-      // C) left head in/out
-      {
-        let xvw = 110;
-        if (p < p3[0]) xvw = 110;
-        else if (p <= p3[1]) {
-          const t = clamp((p - p3[0]) / (p3[1] - p3[0]));
-          xvw = lerp(110, targetLeftXvw, pe(t));
-        } else if (p <= p4[0]) xvw = targetLeftXvw;
-        else {
-          const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
-          xvw = lerp(targetLeftXvw, 110, pe(t));
-        }
-        headLeftHero.style.transform = `translate(${xvw}vw, 0)`;
-      }
+    function sceneProgress(sectionEl){
+      const r = sectionEl.getBoundingClientRect();
+      const top = window.scrollY + r.top;
+      const h = sectionEl.offsetHeight;
+      const vh = window.innerHeight;
+      return clamp((latestScrollY - top) / (h - vh));
     }
 
-    // ----- SPAGHETTI SCENE -----
-    if (scene && meatball && spaghettiWrap && spaghettiStack) {
-      const progress = sceneProgress(scene);
+    function tick() {
+      // HERO AUTO LOOP
+      if (hero && meHoldingHero && headRightHero && headLeftHero) {
+        const now = performance.now() / 1000;
+        const phase = (now / HERO_SECONDS_PER_CYCLE) % 1;
+        const p = phase < 0.5 ? (phase * 2) : (2 - phase * 2);
+        const pe = (t) => t * t * (3 - 2 * t);
 
-      // 1) Meatball roll
-      const spins = 5;
-      const rot = progress * (spins * 360);
-      const bob = Math.sin(progress * Math.PI * 2) * 6;
-      const squash = 1 - Math.abs(Math.sin(progress * Math.PI)) * 0.04;
+        const p1 = [0.00, 0.25];
+        const p2 = [0.25, 0.50];
+        const p3 = [0.50, 0.75];
+        const p4 = [0.75, 1.00];
 
-      meatball.style.transform =
-        `translateY(${bob}px) rotate(${rot}deg) scaleY(${squash}) scaleX(${1 + (1 - squash)})`;
-
-      const greasiness = 0.95 + progress * 0.15;
-      meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
-
-      // 2) Spaghetti conveyor
-      const tileEl = document.querySelector(".spaghetti-tile");
-      const tileHeight = tileEl ? tileEl.getBoundingClientRect().height : 320;
-      const tiles = 14; // matches your stack
-
-      const totalPour = tileHeight * tiles;
-      const poured = progress * totalPour;
-
-      // grow viewport up to one tile tall
-      const visible = Math.min(poured, tileHeight);
-      spaghettiWrap.style.height = `${visible}px`;
-
-      // slide the stack upward after first tile
-      const maxOffset = totalPour - tileHeight;
-      const offset = Math.min(Math.max(poured - tileHeight, 0), maxOffset);
-
-      spaghettiStack.style.transform = `translateY(${-offset}px)`;
-
-      // 3) Story follows spaghetti
-      if (storyInner) {
-        storyInner.style.transform = `translateY(${-offset}px)`;
-      }
-    }
-
-    // ----- HANDS SCENE -----
-    if (handsScene && meHolding && headRight && headLeft) {
-      const p = sceneProgress(handsScene);
-
-      // Phase timing
-      const p1 = [0.00, 0.25]; // meholding rises
-      const p2 = [0.25, 0.50]; // head right enters
-      const p3 = [0.50, 0.75]; // head left enters
-      const p4 = [0.75, 1.00]; // heads exit
-
-      // A) meholding rises from below
-      {
-        const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
-        const y = lerp(110, 0, ease(t)); // vh units
-        meHolding.style.transform = `translate(-50%, ${y}vh)`;
-      }
-
-      // tune these to match "mouth under hands"
-      const targetRightXvw = 18;
-      const targetLeftXvw  = -18;
-
-      // B) right head slide in/out
-      {
-        let xvw = -110;
-        if (p < p2[0]) {
-          xvw = -110;
-        } else if (p <= p2[1]) {
-          const t = clamp((p - p2[0]) / (p2[1] - p2[0]));
-          xvw = lerp(-110, targetRightXvw, ease(t));
-        } else if (p <= p4[0]) {
-          xvw = targetRightXvw;
-        } else {
-          const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
-          xvw = lerp(targetRightXvw, -110, ease(t));
+        // meholding rises
+        {
+          const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
+          const y = lerp(110, 0, pe(t));
+          meHoldingHero.style.transform = `translate(-50%, ${y}vh)`;
         }
-        headRight.style.transform = `translate(${xvw}vw, 0)`;
+
+        const targetRightXvw = 18;
+        const targetLeftXvw  = -18;
+
+        // right head in/out
+        {
+          let xvw = -110;
+          if (p < p2[0]) xvw = -110;
+          else if (p <= p2[1]) {
+            const t = clamp((p - p2[0]) / (p2[1] - p2[0]));
+            xvw = lerp(-110, targetRightXvw, pe(t));
+          } else if (p <= p4[0]) xvw = targetRightXvw;
+          else {
+            const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+            xvw = lerp(targetRightXvw, -110, pe(t));
+          }
+          headRightHero.style.transform = `translate(${xvw}vw, 0)`;
+        }
+
+        // left head in/out
+        {
+          let xvw = 110;
+          if (p < p3[0]) xvw = 110;
+          else if (p <= p3[1]) {
+            const t = clamp((p - p3[0]) / (p3[1] - p3[0]));
+            xvw = lerp(110, targetLeftXvw, pe(t));
+          } else if (p <= p4[0]) xvw = targetLeftXvw;
+          else {
+            const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+            xvw = lerp(targetLeftXvw, 110, pe(t));
+          }
+          headLeftHero.style.transform = `translate(${xvw}vw, 0)`;
+        }
       }
 
-      // C) left head slide in/out
-      {
-        let xvw = 110;
-        if (p < p3[0]) {
-          xvw = 110;
-        } else if (p <= p3[1]) {
-          const t = clamp((p - p3[0]) / (p3[1] - p3[0]));
-          xvw = lerp(110, targetLeftXvw, ease(t));
-        } else if (p <= p4[0]) {
-          xvw = targetLeftXvw;
-        } else {
-          const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
-          xvw = lerp(targetLeftXvw, 110, ease(t));
+      // SPAGHETTI SCENE
+      if (scene && meatball && spaghettiWrap && spaghettiStack) {
+        const progress = sceneProgress(scene);
+
+        // Meatball roll
+        const spins = 5;
+        const rot = progress * (spins * 360);
+        const bob = Math.sin(progress * Math.PI * 2) * 6;
+        const squash = 1 - Math.abs(Math.sin(progress * Math.PI)) * 0.04;
+
+        meatball.style.transform =
+          `translateY(${bob}px) rotate(${rot}deg) scaleY(${squash}) scaleX(${1 + (1 - squash)})`;
+
+        const greasiness = 0.95 + progress * 0.15;
+        meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
+
+        // Spaghetti conveyor
+        const tileEl = document.querySelector(".spaghetti-tile");
+        const tileHeight = tileEl ? tileEl.getBoundingClientRect().height : 320;
+        const tiles = 14;
+
+        const totalPour = tileHeight * tiles;
+        const poured = progress * totalPour;
+
+        const visible = Math.min(poured, tileHeight);
+        spaghettiWrap.style.height = `${visible}px`;
+
+        const maxOffset = totalPour - tileHeight;
+        const offset = Math.min(Math.max(poured - tileHeight, 0), maxOffset);
+
+        spaghettiStack.style.transform = `translateY(${-offset}px)`;
+
+        if (storyInner) {
+          storyInner.style.transform = `translateY(${-offset}px)`;
         }
-        headLeft.style.transform = `translate(${xvw}vw, 0)`;
       }
+
+      // HANDS SCENE (scroll-driven)
+      if (handsScene && meHolding && headRight && headLeft) {
+        const p = sceneProgress(handsScene);
+
+        const p1 = [0.00, 0.25];
+        const p2 = [0.25, 0.50];
+        const p3 = [0.50, 0.75];
+        const p4 = [0.75, 1.00];
+
+        {
+          const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
+          const y = lerp(110, 0, ease(t));
+          meHolding.style.transform = `translate(-50%, ${y}vh)`;
+        }
+
+        const targetRightXvw = 18;
+        const targetLeftXvw  = -18;
+
+        {
+          let xvw = -110;
+          if (p < p2[0]) xvw = -110;
+          else if (p <= p2[1]) {
+            const t = clamp((p - p2[0]) / (p2[1] - p2[0]));
+            xvw = lerp(-110, targetRightXvw, ease(t));
+          } else if (p <= p4[0]) xvw = targetRightXvw;
+          else {
+            const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+            xvw = lerp(targetRightXvw, -110, ease(t));
+          }
+          headRight.style.transform = `translate(${xvw}vw, 0)`;
+        }
+
+        {
+          let xvw = 110;
+          if (p < p3[0]) xvw = 110;
+          else if (p <= p3[1]) {
+            const t = clamp((p - p3[0]) / (p3[1] - p3[0]));
+            xvw = lerp(110, targetLeftXvw, ease(t));
+          } else if (p <= p4[0]) xvw = targetLeftXvw;
+          else {
+            const t = clamp((p - p4[0]) / (p4[1] - p4[0]));
+            xvw = lerp(targetLeftXvw, 110, ease(t));
+          }
+          headLeft.style.transform = `translate(${xvw}vw, 0)`;
+        }
+      }
+
+      requestAnimationFrame(tick);
     }
 
     requestAnimationFrame(tick);
+  })();
+
+  // ===== Reviews: localStorage feed + submit form =====
+  const REVIEWS_KEY = "bsw_reviews_v1";
+
+  const feedEl = document.getElementById("reviews-feed");
+  const formEl = document.getElementById("review-form");
+  const nameEl = document.getElementById("reviewer-name");
+  const commentEl = document.getElementById("reviewer-comment");
+  const wordCountEl = document.getElementById("word-count");
+  const clearBtn = document.getElementById("clear-my-reviews");
+
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
   }
 
-  requestAnimationFrame(tick);
-})();
-</script>
+  function loadReviews(){
+    try {
+      const raw = localStorage.getItem(REVIEWS_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
 
+  function saveReviews(list){
+    localStorage.setItem(REVIEWS_KEY, JSON.stringify(list));
+  }
+
+  function formatTime(ts){
+    try {
+      const d = new Date(ts);
+      return d.toLocaleString(undefined, { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+    } catch {
+      return "";
+    }
+  }
+
+  function renderReviews(){
+    if (!feedEl) return;
+
+    const reviews = loadReviews()
+      .sort((a,b) => (b.ts || 0) - (a.ts || 0));
+
+    if (reviews.length === 0){
+      feedEl.innerHTML = `
+        <div class="review">
+          <div class="review-top">
+            <div class="review-name">Bobby Spaghetti Wagon HQ</div>
+            <div class="review-time">${formatTime(Date.now())}</div>
+          </div>
+          <div class="review-text">No reviews yet. Be the first brave soul to enter the sauce.</div>
+        </div>
+      `;
+      return;
+    }
+
+    feedEl.innerHTML = reviews.map(r => `
+      <div class="review">
+        <div class="review-top">
+          <div class="review-name">${escapeHtml(r.name || "Anonymous")}</div>
+          <div class="review-time">${formatTime(r.ts)}</div>
+        </div>
+        <div class="review-text">${escapeHtml(r.comment || "")}</div>
+      </div>
+    `).join("");
+  }
+
+  function countWords(text){
+    const words = text.trim().split(/\s+/).filter(Boolean);
+    return words.length;
+  }
+
+  function enforceWordLimit(){
+    if (!commentEl || !wordCountEl) return;
+    const words = commentEl.value.trim().split(/\s+/).filter(Boolean);
+
+    if (words.length > 100){
+      commentEl.value = words.slice(0, 100).join(" ");
+    }
+    wordCountEl.textContent = String(countWords(commentEl.value));
+  }
+
+  if (commentEl){
+    commentEl.addEventListener("input", enforceWordLimit);
+  }
+
+  if (nameEl){
+    nameEl.addEventListener("input", () => {
+      nameEl.value = nameEl.value.replace(/^\s+/, "");
+    });
+  }
+
+  if (formEl){
+    formEl.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const name = (nameEl?.value || "").trim().slice(0, 40);
+      const commentRaw = (commentEl?.value || "").trim();
+      const words = commentRaw.split(/\s+/).filter(Boolean);
+
+      if (!name || words.length === 0) return;
+
+      const comment = words.slice(0, 100).join(" ");
+
+      const reviews = loadReviews();
+      reviews.push({ name, comment, ts: Date.now() });
+      saveReviews(reviews);
+
+      commentEl.value = "";
+      enforceWordLimit();
+      renderReviews();
+
+      if (feedEl) feedEl.scrollTop = 0;
+    });
+  }
+
+  if (clearBtn){
+    clearBtn.addEventListener("click", () => {
+      localStorage.removeItem(REVIEWS_KEY);
+      renderReviews();
+    });
+  }
+
+  (function seedIfEmpty(){
+    const existing = loadReviews();
+    if (existing.length > 0) return;
+    const seed = [
+      { name: "Tony “Saucehands” G.", comment: "I came for noodles. I left with a new outlook on life and a permanent marinara aura.", ts: Date.now() - 86400000 * 2 },
+      { name: "Denise R.", comment: "They said the waiver was mandatory. I laughed. Then the spaghetti laughed back.", ts: Date.now() - 86400000 * 1.5 },
+      { name: "Forklift Beep Jr.", comment: "Two beeps means yes. One beep means more onions.", ts: Date.now() - 86400000 * 1 },
+    ];
+    saveReviews(seed);
+  })();
+
+  renderReviews();
+  </script>
 
 </body>
 </html>
