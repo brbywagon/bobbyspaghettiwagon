@@ -462,6 +462,20 @@
         right: 6px;
         top: 58%;
       }
+       /* Let touches interact with the story overlay */
+  #spaghetti-story{
+    pointer-events: auto;
+  }
+
+  /* Make the story text itself scrollable */
+  #spaghetti-story .story-inner{
+    pointer-events: auto;
+    max-height: 62vh;              /* adjust 50–70vh to taste */
+    overflow: auto;                /* ✅ internal scroll */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;  /* ✅ prevents page scroll stealing */
+    touch-action: pan-y;
+  }
 
       #head-right, #head-left { top: 50%; width: min(92vw, 820px); }
       #meholding { width: min(96vw, 950px); }
@@ -744,10 +758,17 @@
 
         spaghettiStack.style.transform = `translateY(${-offset}px)`;
 
-        if (storyInner) {
-          storyInner.style.transform = `translateY(${-offset}px)`;
-        }
-      }
+if (storyInner) {
+  const isMobile = window.matchMedia("(max-width: 860px)").matches;
+
+  // On mobile: keep story readable + scrollable (don't drag it with noodles)
+  if (isMobile) {
+    storyInner.style.transform = "translateY(0)";
+  } else {
+    // Desktop: keep the “printed on noodles” behavior
+    storyInner.style.transform = `translateY(${-offset}px)`;
+  }
+}
 
       // HANDS SCENE (scroll-driven)
       if (handsScene && meHolding && headRight && headLeft) {
