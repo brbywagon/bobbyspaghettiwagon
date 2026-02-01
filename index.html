@@ -403,7 +403,7 @@
       border-radius: 10px;
       padding: 10px 12px;
       backdrop-filter: blur(2px);
-      will-change: transform;
+      
     }
 
     #spaghetti-story h3{
@@ -511,26 +511,32 @@
         <div id="mechanic-stage">
           <img id="mechanic-img" src="bobby barf (2).png" alt="Greasy mechanic" />
 
-          <div id="spaghetti-wrap" aria-hidden="true">
-            <div id="spaghetti-stack">
-              <div class="spaghetti-tile t1"></div>
-              <div class="spaghetti-tile t2"></div>
-              <div class="spaghetti-tile t3"></div>
-              <div class="spaghetti-tile t4"></div>
-              <div class="spaghetti-tile t5"></div>
-              <div class="spaghetti-tile t6"></div>
-              <div class="spaghetti-tile t7"></div>
-              <div class="spaghetti-tile t8"></div>
-              <div class="spaghetti-tile t9"></div>
-              <div class="spaghetti-tile t10"></div>
-              <div class="spaghetti-tile t11"></div>
-              <div class="spaghetti-tile t12"></div>
-              <div class="spaghetti-tile t13"></div>
-              <div class="spaghetti-tile t14"></div>
-            </div>
+<div id="spaghetti-wrap" aria-hidden="true">
+  <div id="spaghetti-stack">
+    <div class="spaghetti-tile t1"></div>
+    <div class="spaghetti-tile t2"></div>
+    <div class="spaghetti-tile t3"></div>
+    <div class="spaghetti-tile t4"></div>
+    <div class="spaghetti-tile t5"></div>
+    <div class="spaghetti-tile t6"></div>
+    <div class="spaghetti-tile t7"></div>
+    <div class="spaghetti-tile t8"></div>
+    <div class="spaghetti-tile t9"></div>
+    <div class="spaghetti-tile t10"></div>
+    <div class="spaghetti-tile t11"></div>
+    <div class="spaghetti-tile t12"></div>
+    <div class="spaghetti-tile t13"></div>
+    <div class="spaghetti-tile t14"></div>
+  </div>
+</div>
 
-            <div id="spaghetti-story">
-              <div class="story-inner" id="story-inner">
+<!-- ✅ STORY OVERLAY moved OUTSIDE the wrap -->
+<div id="spaghetti-story">
+  <div class="story-inner" id="story-inner">
+    ...your full story paragraphs...
+  </div>
+</div>
+
                 <h3>This a my story!</h3>
                 <p>I came to this country with only one spaghetti noodle in my pocket. I had to use it for a shoe lace in my boot. I had no choice, I had nothing else. I had to cut my only spaghetti noodle in half and use one half a noodle for each boot lace and I pulled myself up by my boot spaghetties.</p>
                 <p>Bobbyspaghetti wagon .com start as a cardboard box I push on a skateboard. In 1997 I sell my watch to buy one onion and a ketchup and I make a noodle with my hands using ashes of a grandma made of spaghetti. I don’t tell no one but everyone love a spaghetti made of grandma made of spaghetti ashes.</p>
@@ -694,6 +700,8 @@
       // SPAGHETTI SCENE
       if (scene && meatball && spaghettiWrap && spaghettiStack) {
         const progress = sceneProgress(scene);
+        const storyEl = document.getElementById("spaghetti-story");
+
 
         // Meatball roll (base is translateY(-50%) because top:50%)
         const spins = 5;
