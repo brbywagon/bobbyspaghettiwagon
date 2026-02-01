@@ -563,7 +563,7 @@
           <section class="panel" id="reviews-feed-panel">
             <div class="panel-header">
               <div class="panel-title">what they say about a bobby spaghetti wagon.com</div>
-              <div class="panel-sub">Most recent at the top • scroll for the ancient sauce</div>
+              <div class="panel-sub"></div>
             </div>
 
             <div class="panel-body" id="reviews-feed" role="log" aria-live="polite"></div>
@@ -573,7 +573,7 @@
           <section class="panel" id="reviews-form-panel">
             <div class="panel-header">
               <div class="panel-title">Say a nice special 100 % stars and suggestions for the worlds best Bobby Spaghetti wagon.com</div>
-              <div class="panel-sub">Name + comment (100 words max). Submits instantly into the window above.</div>
+              <div class="panel-sub">Name + comment (100 words max).</div>
             </div>
 
             <div class="panel-body">
@@ -595,7 +595,7 @@
                 </div>
 
                 <div class="fineprint">
-                  Note: without a server, submissions save on <b>your device</b> only (localStorage).
+                  Note: Submissions save on <b>your device</b> only (localStorage).
                 </div>
               </form>
             </div>
@@ -936,9 +936,10 @@
     const existing = loadReviews();
     if (existing.length > 0) return;
     const seed = [
-      { name: "Tony “Saucehands” G.", comment: "I came for noodles. I left with a new outlook on life and a permanent marinara aura.", ts: Date.now() - 86400000 * 2 },
-      { name: "Denise R.", comment: "They said the waiver was mandatory. I laughed. Then the spaghetti laughed back.", ts: Date.now() - 86400000 * 1.5 },
-      { name: "Forklift Beep Jr.", comment: "Two beeps means yes. One beep means more onions.", ts: Date.now() - 86400000 * 1 },
+      { name: "barometric marinara machine", comment: "my favorite restaurant, great for family and pets. don't bring grandma tho, I heard they go missing here", ts: Date.now() - 86400000 * 2 },
+      { name: "Spork fed", comment: "Every time I go I get the same thong becaise it's the only thing they have on the menu", ts: Date.now() - 86400000 * 1.5 },
+      { name: "JERRY TIME", comment: "I eat a meatball and grow attractive muscells", ts: Date.now() - 86400000 * 1 },
+      { name: "torta pounder with cheese", comment: "The spghetti burn my feet", ts: Date.now() - 86400000 * .5 },
     ];
     saveReviews(seed);
   })();
