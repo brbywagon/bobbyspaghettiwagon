@@ -53,19 +53,12 @@
       box-sizing: border-box;
     }
 
-    /* ✅ Right sidebar stack: (reviews panels) + (meatball) */
+    /* ✅ Right sidebar stack: (reviews panels) */
     #right-sidebar{
       display: grid;
-      grid-template-rows: 1fr auto;
+      grid-template-rows: 1fr;
       gap: 16px;
       min-height: 0; /* enables internal scroll areas to work */
-    }
-
-    #meatball-wrap{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 6px 0 0 0;
     }
 
     /* ===== Second Scene: The Spaghetti Hands Theater ===== */
@@ -198,7 +191,6 @@
       display: grid;
       grid-template-rows: 1fr 1fr;
       gap: 16px;
-      min-height: 70vh;
       min-height: 0;
     }
 
@@ -427,11 +419,16 @@
       margin: 0 0 10px 0;
     }
 
-    /* Meatball */
-    #meatball {
-      width: 220px;
-      height: 220px;
+    /* ✅ Meatball now sticks to the right edge of the spaghetti/story scene */
+    #meatball{
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      width: 180px;
+      height: 180px;
       background: url("meatball.png") no-repeat center / contain;
+      z-index: 30;
+      pointer-events: none;
       will-change: transform, filter;
     }
 
@@ -454,12 +451,16 @@
         height: auto;
       }
 
-      #right-sidebar{
-        grid-template-rows: auto auto;
-      }
-
       #spaghetti-wrap{
         width: 180px;
+      }
+
+      /* smaller meatball on mobile */
+      #meatball{
+        width: 120px;
+        height: 120px;
+        right: 6px;
+        top: 58%;
       }
 
       #head-right, #head-left { top: 50%; width: min(92vw, 820px); }
@@ -474,6 +475,12 @@
       }
       #reviews-form-panel .panel-body{
         max-height: 46vh;
+      }
+
+      /* optional: keep story text from hiding behind the meatball */
+      #spaghetti-story .story-inner{
+        width: calc(92% - 56px);
+        margin-right: 56px;
       }
     }
   </style>
@@ -551,25 +558,24 @@
               </div>
             </div>
           </div>
+
+          <!-- ✅ Meatball is now attached to the story scene -->
+          <div id="meatball" aria-label="Meatball"></div>
         </div>
       </div>
 
-      <!-- ✅ RIGHT SIDEBAR (reviews + meatball) -->
+      <!-- ✅ RIGHT SIDEBAR (reviews only now) -->
       <div id="right-sidebar">
-
         <aside id="reviews-column" aria-label="Bobby Spaghetti Wagon reviews">
 
-          <!-- WINDOW 1: What they say -->
           <section class="panel" id="reviews-feed-panel">
             <div class="panel-header">
               <div class="panel-title">what they say about a bobby spaghetti wagon.com</div>
               <div class="panel-sub"></div>
             </div>
-
             <div class="panel-body" id="reviews-feed" role="log" aria-live="polite"></div>
           </section>
 
-          <!-- WINDOW 2: Submit form -->
           <section class="panel" id="reviews-form-panel">
             <div class="panel-header">
               <div class="panel-title">Say a nice special 100 % stars and suggestions for the worlds best Bobby Spaghetti wagon.com</div>
@@ -602,11 +608,6 @@
           </section>
 
         </aside>
-
-        <div id="meatball-wrap">
-          <div id="meatball" aria-label="Meatball"></div>
-        </div>
-
       </div>
 
     </div>
@@ -673,7 +674,6 @@
         const p3 = [0.50, 0.75];
         const p4 = [0.75, 1.00];
 
-        // meholding rises
         {
           const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
           const y = lerp(110, 0, pe(t));
@@ -683,7 +683,6 @@
         const targetRightXvw = 18;
         const targetLeftXvw  = -18;
 
-        // right head in/out
         {
           let xvw = -110;
           if (p < p2[0]) xvw = -110;
@@ -698,7 +697,6 @@
           headRightHero.style.transform = `translate(${xvw}vw, 0)`;
         }
 
-        // left head in/out
         {
           let xvw = 110;
           if (p < p3[0]) xvw = 110;
@@ -718,14 +716,14 @@
       if (scene && meatball && spaghettiWrap && spaghettiStack) {
         const progress = sceneProgress(scene);
 
-        // Meatball roll
+        // Meatball roll (✅ keep it centered with -50%)
         const spins = 5;
         const rot = progress * (spins * 360);
         const bob = Math.sin(progress * Math.PI * 2) * 6;
         const squash = 1 - Math.abs(Math.sin(progress * Math.PI)) * 0.04;
 
         meatball.style.transform =
-          `translateY(${bob}px) rotate(${rot}deg) scaleY(${squash}) scaleX(${1 + (1 - squash)})`;
+          `translateY(calc(-50% + ${bob}px)) rotate(${rot}deg) scaleY(${squash}) scaleX(${1 + (1 - squash)})`;
 
         const greasiness = 0.95 + progress * 0.15;
         meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
