@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -284,10 +284,10 @@
       top: 50%;
       width: 220px;
       height: 0px;          /* animated */
-      overflow: hidden;     /* IMPORTANT: clips noodles + story */
+      overflow: hidden;     /* IMPORTANT: clips noodles only */
       transform: translateX(-50%);
       will-change: height;
-      pointer-events: none; /* we want page scroll to drive the scene */
+      pointer-events: none; /* page scroll drives scene */
     }
 
     #spaghetti-stack {
@@ -314,34 +314,35 @@
       transform: rotate(180deg);
     }
 
-/* STORY OVERLAY (now OUTSIDE wrap so it doesn't get clipped) */
-#spaghetti-story{
-  position: absolute;
-  left: 52%;
-  top: 50%;
-  width: 220px;                 /* match spaghetti-wrap width on desktop */
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  pointer-events: none;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
+    /* STORY OVERLAY (OUTSIDE wrap so it doesn't get clipped) */
+    #spaghetti-story{
+      position: absolute;
+      left: 52%;
+      top: 50%;
+      width: 220px;                 /* match spaghetti-wrap width on desktop */
+      transform: translate(-50%, -50%); /* base transform (JS adds Y on desktop) */
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      will-change: transform;
+    }
 
-#spaghetti-story .story-inner{
-  width: 92%;
-  margin-top: 10px;
-  color: rgba(255,255,255,.95);
-  text-shadow: 0 2px 10px rgba(0,0,0,.85);
-  line-height: 1.25;
-  font-weight: 700;
-  font-size: 20px;
-  background: rgba(0,0,0,.28);
-  border-radius: 10px;
-  padding: 10px 12px;
-  backdrop-filter: blur(2px);
-  will-change: transform;
-}
+    #spaghetti-story .story-inner{
+      width: 92%;
+      margin-top: 10px;
+      color: rgba(255,255,255,.95);
+      text-shadow: 0 2px 10px rgba(0,0,0,.85);
+      line-height: 1.25;
+      font-weight: 700;
+      font-size: 20px;
+      background: rgba(0,0,0,.28);
+      border-radius: 10px;
+      padding: 10px 12px;
+      backdrop-filter: blur(2px);
+      will-change: transform;
+    }
 
     #spaghetti-story h3{
       margin: 0 0 8px 0;
@@ -419,100 +420,98 @@
     #head-right{ left: 0; transform: translate(-110vw, 0); }
     #head-left{ right: 0; transform: translate(110vw, 0); }
 
-@media (max-width: 860px){
+    @media (max-width: 860px){
+      /* Keep sticky scene stable */
+      .scene-inner{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        gap: 14px;
+        height: 100vh;
+        align-items: start;
+        overflow: hidden;
+      }
 
-  /* Keep sticky scene stable */
-  .scene-inner{
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-    gap: 14px;
-    height: 100vh;
-    align-items: start;
-    overflow: hidden;
-  }
+      /* Make noodle window narrower on mobile */
+      #spaghetti-wrap{ width: 180px; }
 
-  /* Make noodle window narrower on mobile */
-  #spaghetti-wrap{ width: 180px; }
+      /* Match story box width to noodle window */
+      #spaghetti-story{
+        width: 180px;
+        pointer-events: auto; /* allow scroll on story */
+      }
 
-  /* Match story box width to noodle window */
-  #spaghetti-story{
-    width: 180px;
-    pointer-events: auto; /* allow scroll on story */
-  }
+      /* Scrollable story window so full story is reachable */
+      #spaghetti-story .story-inner{
+        pointer-events: auto;
+        max-height: 46vh;              /* story window height on mobile */
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        touch-action: pan-y;
 
-  /* Scrollable story window so full story is reachable */
-  #spaghetti-story .story-inner{
-    pointer-events: auto;
-    max-height: 46vh;              /* ✅ story window height on mobile */
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    touch-action: pan-y;
+        /* keep story from hiding behind meatball */
+        width: calc(92% - 56px);
+        margin-right: 56px;
+        font-size: 18px;
+      }
 
-    /* keep story from hiding behind meatball */
-    width: calc(92% - 56px);
-    margin-right: 56px;
-    font-size: 18px;
-  }
+      /* Meatball smaller */
+      #meatball{
+        width: 120px;
+        height: 120px;
+        right: 6px;
+        top: 58%;
+      }
 
-  /* Meatball smaller */
-  #meatball{
-    width: 120px;
-    height: 120px;
-    right: 6px;
-    top: 58%;
-  }
+      /* Sidebar */
+      #right-sidebar{
+        margin-top: 0;
+        min-height: 0;
+        overflow: hidden;
+      }
 
-  /* Sidebar should NOT be pushed down with margin hacks */
-  #right-sidebar{
-    margin-top: 0;
-    min-height: 0;
-    overflow: hidden;
-  }
+      /* Two panels: reviews (scroll) + form (fits remaining space) */
+      #reviews-column{
+        display: grid;
+        grid-template-rows: 44vh 1fr;  /* ~6 reviews + rest for form */
+        gap: 12px;
+        height: 100%;
+        min-height: 0;
+      }
 
-  /* Two panels: reviews (scroll) + form (fits remaining space) */
-  #reviews-column{
-    display: grid;
-    grid-template-rows: 44vh 1fr;  /* ✅ ~6 reviews + rest for form */
-    gap: 12px;
-    height: 100%;
-    min-height: 0;
-  }
+      /* Reviews feed scrolls internally */
+      #reviews-feed-panel .panel-body{
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
 
-  /* Reviews feed scrolls internally */
-  #reviews-feed-panel .panel-body{
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-  }
+      /* Form: if too tall, it can scroll */
+      #reviews-form-panel .panel-body{
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
 
-  /* Form should try to show fully; if too tall, it can scroll */
-  #reviews-form-panel .panel-body{
-    overflow: auto;                 /* important on short phones */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-  }
+      /* Tighten review cards */
+      .review{
+        padding: 8px 9px;
+        margin-bottom: 8px;
+      }
+      .review-text{
+        font-size: 12.5px;
+        line-height: 1.25;
+      }
 
-  /* Tighten review cards so ~6 fit better */
-  .review{
-    padding: 8px 9px;
-    margin-bottom: 8px;
-  }
-  .review-text{
-    font-size: 12.5px;
-    line-height: 1.25;
-  }
-
-  /* Make the form more compact on mobile */
-  textarea#reviewer-comment{
-    rows: 4;
-  }
-  input, textarea{
-    padding: 8px 10px;
-    font-size: 14px;
-  }
-}
-
+      /* Make the form more compact */
+      textarea#reviewer-comment{
+        rows: 4;
+      }
+      input, textarea{
+        padding: 8px 10px;
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 
@@ -570,19 +569,19 @@
               <div class="spaghetti-tile t13"></div>
               <div class="spaghetti-tile t14"></div>
             </div>
+          </div>
 
-            <!-- STORY OVERLAY (back inside the wrap) -->
-            <div id="spaghetti-story">
-              <div class="story-inner" id="story-inner">
-                <h3>This a my story!</h3>
-                <p>I came to this country with only one spaghetti noodle in my pocket. I had to use it for a shoe lace in my boot. I had no choice, I had nothing else. I had to cut my only spaghetti noodle in half and use one half a noodle for each boot lace and I pulled myself up by my boot spaghetties.</p>
-                <p>Bobbyspaghetti wagon .com start as a cardboard box I push on a skateboard. In 1997 I sell my watch to buy one onion and a ketchup and I make a noodle with my hands using ashes of a grandma made of spaghetti. I don’t tell no one but everyone love a spaghetti made of grandma made of spaghetti ashes.</p>
-                <p>That’s how I make my first 20 dollars! With that I buy a can of real tomatoes and two more onions. That night I sleep like a baby in my cardboard box skateboard wagon with many patriot love for this great country.</p>
-                <p>In the morning I brush my teeth with spaghetti sauce and I sell enough spaghetti to go to the government department of Fedex Kinkos and I print a green card, a social security card, a birth certificate (born in Texas ;) and a death certificate for my grandma ;) and certificate for a bachelor of culinary science from the Massachusetts Institute of Spaghetti Technologies (MIST) Valve Victorian, Magma Cum Loud special honors I graduate!</p>
-                <p>I then have everything I need to make the most successful spaghetti wagon in the history of the universe. That night I make a dream I get abducted by a sexy alien. She take me up to her space kitchen and show me how to make the perfect spaghetti noodle with grandma spaghetti ashes and she show me how to use a colander to protect my secret recipe thoughts from the Fedex government.</p>
-                <p>I wake up very happy except my bed is wet with spaghetti sauce so I go to work so I can afford a water to clean my hands.</p>
-                <p>That is the whole true story of how bobbyspaghettiwagon.com survive the Y2K.</p>
-              </div>
+          <!-- STORY OVERLAY (OUTSIDE wrap) -->
+          <div id="spaghetti-story">
+            <div class="story-inner" id="story-inner">
+              <h3>This a my story!</h3>
+              <p>I came to this country with only one spaghetti noodle in my pocket. I had to use it for a shoe lace in my boot. I had no choice, I had nothing else. I had to cut my only spaghetti noodle in half and use one half a noodle for each boot lace and I pulled myself up by my boot spaghetties.</p>
+              <p>Bobbyspaghetti wagon .com start as a cardboard box I push on a skateboard. In 1997 I sell my watch to buy one onion and a ketchup and I make a noodle with my hands using ashes of a grandma made of spaghetti. I don’t tell no one but everyone love a spaghetti made of grandma made of spaghetti ashes.</p>
+              <p>That’s how I make my first 20 dollars! With that I buy a can of real tomatoes and two more onions. That night I sleep like a baby in my cardboard box skateboard wagon with many patriot love for this great country.</p>
+              <p>In the morning I brush my teeth with spaghetti sauce and I sell enough spaghetti to go to the government department of Fedex Kinkos and I print a green card, a social security card, a birth certificate (born in Texas ;) and a death certificate for my grandma ;) and certificate for a bachelor of culinary science from the Massachusetts Institute of Spaghetti Technologies (MIST) Valve Victorian, Magma Cum Loud special honors I graduate!</p>
+              <p>I then have everything I need to make the most successful spaghetti wagon in the history of the universe. That night I make a dream I get abducted by a sexy alien. She take me up to her space kitchen and show me how to make the perfect spaghetti noodle with grandma spaghetti ashes and she show me how to use a colander to protect my secret recipe thoughts from the Fedex government.</p>
+              <p>I wake up very happy except my bed is wet with spaghetti sauce so I go to work so I can afford a water to clean my hands.</p>
+              <p>That is the whole true story of how bobbyspaghettiwagon.com survive the Y2K.</p>
             </div>
           </div>
 
@@ -657,7 +656,6 @@
     const spaghettiStack = document.getElementById("spaghetti-stack");
     const storyInner = document.getElementById("story-inner");
     const storyEl = document.getElementById("spaghetti-story");
-
 
     const handsScene = document.getElementById("hands-scene");
     const meHolding = document.getElementById("meholding");
@@ -766,24 +764,19 @@
         const maxOffset = totalPour - tileHeight;
         const offset = Math.min(Math.max(poured - tileHeight, 0), maxOffset);
 
-      spaghettiStack.style.transform = `translateY(${-offset}px)`;
+        spaghettiStack.style.transform = `translateY(${-offset}px)`;
 
-        // Move story with noodles on desktop, keep stable (scrollable) on mobile
-      if (storyEl) {
-      const isMobile = window.matchMedia("(max-width: 860px)").matches;
+        // Story: move with noodles on desktop, keep stable (scrollable) on mobile
+        if (storyEl) {
+          const isMobile = window.matchMedia("(max-width: 860px)").matches;
+          storyEl.style.transform = isMobile
+            ? "translate(-50%, -50%)"
+            : `translate(-50%, calc(-50% + ${-offset}px))`;
+        }
 
-      // storyEl is positioned with translate(-50%, -50%) as its "base"
-      // On desktop we add the extra Y offset so it rides the noodles.
-      storyEl.style.transform = isMobile
-        ? "translate(-50%, -50%)"
-        : `translate(-50%, calc(-50% + ${-offset}px))`;
-}
-
-// Keep inner text itself untransformed (better for mobile scrolling)
-if (storyInner) {
-  storyInner.style.transform = "translateY(0)";
-}
-
+        // Keep inner text itself untransformed (better for mobile scrolling)
+        if (storyInner) {
+          storyInner.style.transform = "translateY(0)";
         }
       }
 
