@@ -456,6 +456,63 @@
         min-height: 0;
         height: 44vh; /* gives the mechanic scene room above on mobile */
       }
+        /* Keep the sticky scene stable */
+  .scene-inner{
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr; /* mechanic first, sidebar second */
+    gap: 14px;
+    height: 100vh;
+    align-items: start;
+    overflow: hidden;
+  }
+
+  /* Make sidebar itself scroll-free; page scroll drives everything */
+  #right-sidebar{
+    min-height: 0;
+  }
+
+  /* Two windows: reviews (fixed height) + form (auto) */
+  #reviews-column{
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 12px;
+    height: 100%;
+    min-height: 0;
+  }
+
+  /* Give the FEED window a target height that fits ~6 reviews */
+  #reviews-feed-panel{
+    height: 52vh;           /* ✅ tweak 40–52vh */
+    min-height: 320px;      /* guardrail */
+    max-height: 520px;      /* guardrail */
+  }
+
+  /* Let form window size itself naturally (no clipping) */
+  #reviews-form-panel{
+    height: auto;
+  }
+
+  /* Feed body scrolls internally */
+  #reviews-feed-panel .panel-body{
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* Form body should NOT scroll internally — show it all */
+  #reviews-form-panel .panel-body{
+    overflow: visible;
+  }
+
+  /* If your cards are too tall, tighten spacing a bit on mobile */
+  .review{
+    padding: 8px 9px;
+    margin-bottom: 8px;
+  }
+  .review-text{
+    font-size: 12.5px;
+    line-height: 1.25;
+  }
     }
   </style>
 </head>
