@@ -314,32 +314,34 @@
       transform: rotate(180deg);
     }
 
-    /* STORY OVERLAY (INSIDE WRAP, so it clips exactly like the noodles) */
-    #spaghetti-story{
-      position: absolute;
-      inset: 0;
-      z-index: 10;
-      pointer-events: none;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      will-change: transform;
-    }
+/* STORY OVERLAY (now OUTSIDE wrap so it doesn't get clipped) */
+#spaghetti-story{
+  position: absolute;
+  left: 52%;
+  top: 50%;
+  width: 220px;                 /* match spaghetti-wrap width on desktop */
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
 
-    #spaghetti-story .story-inner{
-      width: 92%;
-      margin-top: 10px;
-      color: rgba(255,255,255,.95);
-      text-shadow: 0 2px 10px rgba(0,0,0,.85);
-      line-height: 1.25;
-      font-weight: 700;
-      font-size: 20px;
-      background: rgba(0,0,0,.28);
-      border-radius: 10px;
-      padding: 10px 12px;
-      backdrop-filter: blur(2px);
-      will-change: transform;
-    }
+#spaghetti-story .story-inner{
+  width: 92%;
+  margin-top: 10px;
+  color: rgba(255,255,255,.95);
+  text-shadow: 0 2px 10px rgba(0,0,0,.85);
+  line-height: 1.25;
+  font-weight: 700;
+  font-size: 20px;
+  background: rgba(0,0,0,.28);
+  border-radius: 10px;
+  padding: 10px 12px;
+  backdrop-filter: blur(2px);
+  will-change: transform;
+}
 
     #spaghetti-story h3{
       margin: 0 0 8px 0;
@@ -417,94 +419,81 @@
     #head-right{ left: 0; transform: translate(-110vw, 0); }
     #head-left{ right: 0; transform: translate(110vw, 0); }
 
-    /* Mobile tweaks */
-    @media (max-width: 860px){
-      
-    /* Push reviews section down so it starts below the story box */
-    #right-sidebar{
-    margin-top: 28vh; /* tweak 12–28vh to taste */
-    }
-      
-      .scene-inner{
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        gap: 14px;
-        height: 100vh;      /* IMPORTANT: keep sticky pinned */
-      }
+@media (max-width: 860px){
 
-      #spaghetti-wrap{ width: 180px; }
-
-      #meatball{
-        width: 120px;
-        height: 120px;
-        right: 6px;
-        top: 58%;
-      }
-
-      /* keep story from hiding behind meatball */
-      #spaghetti-story .story-inner{
-        width: calc(92% - 56px);
-        margin-right: 56px;
-        font-size: 18px;
-      }
-
-      /* keep sidebar from growing taller than the viewport */
-      #right-sidebar{
-        min-height: 0;
-      }
-      #reviews-column{
-        min-height: 0;
-        height: 44vh; /* gives the mechanic scene room above on mobile */
-      }
-        /* Keep the sticky scene stable */
+  /* Keep sticky scene stable */
   .scene-inner{
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr; /* mechanic first, sidebar second */
+    grid-template-rows: auto 1fr;
     gap: 14px;
     height: 100vh;
     align-items: start;
     overflow: hidden;
   }
 
-  /* Make sidebar itself scroll-free; page scroll drives everything */
-  #right-sidebar{
-    min-height: 0;
+  /* Make noodle window narrower on mobile */
+  #spaghetti-wrap{ width: 180px; }
+
+  /* Match story box width to noodle window */
+  #spaghetti-story{
+    width: 180px;
+    pointer-events: auto; /* allow scroll on story */
   }
 
-  /* Two windows: reviews (fixed height) + form (auto) */
+  /* Scrollable story window so full story is reachable */
+  #spaghetti-story .story-inner{
+    pointer-events: auto;
+    max-height: 46vh;              /* ✅ story window height on mobile */
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+
+    /* keep story from hiding behind meatball */
+    width: calc(92% - 56px);
+    margin-right: 56px;
+    font-size: 18px;
+  }
+
+  /* Meatball smaller */
+  #meatball{
+    width: 120px;
+    height: 120px;
+    right: 6px;
+    top: 58%;
+  }
+
+  /* Sidebar should NOT be pushed down with margin hacks */
+  #right-sidebar{
+    margin-top: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Two panels: reviews (scroll) + form (fits remaining space) */
   #reviews-column{
     display: grid;
-    grid-template-rows: auto auto;
+    grid-template-rows: 44vh 1fr;  /* ✅ ~6 reviews + rest for form */
     gap: 12px;
     height: 100%;
     min-height: 0;
   }
 
-  /* Give the FEED window a target height that fits ~6 reviews */
-  #reviews-feed-panel{
-    height: 52vh;           /* ✅ tweak 40–52vh */
-    min-height: 320px;      /* guardrail */
-    max-height: 520px;      /* guardrail */
-  }
-
-  /* Let form window size itself naturally (no clipping) */
-  #reviews-form-panel{
-    height: auto;
-  }
-
-  /* Feed body scrolls internally */
+  /* Reviews feed scrolls internally */
   #reviews-feed-panel .panel-body{
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
 
-  /* Form body should NOT scroll internally — show it all */
+  /* Form should try to show fully; if too tall, it can scroll */
   #reviews-form-panel .panel-body{
-    overflow: visible;
+    overflow: auto;                 /* important on short phones */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
-  /* If your cards are too tall, tighten spacing a bit on mobile */
+  /* Tighten review cards so ~6 fit better */
   .review{
     padding: 8px 9px;
     margin-bottom: 8px;
@@ -513,7 +502,17 @@
     font-size: 12.5px;
     line-height: 1.25;
   }
-    }
+
+  /* Make the form more compact on mobile */
+  textarea#reviewer-comment{
+    rows: 4;
+  }
+  input, textarea{
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+}
+
   </style>
 </head>
 
@@ -657,6 +656,8 @@
     const spaghettiWrap = document.getElementById("spaghetti-wrap");
     const spaghettiStack = document.getElementById("spaghetti-stack");
     const storyInner = document.getElementById("story-inner");
+    const storyEl = document.getElementById("spaghetti-story");
+
 
     const handsScene = document.getElementById("hands-scene");
     const meHolding = document.getElementById("meholding");
@@ -765,10 +766,24 @@
         const maxOffset = totalPour - tileHeight;
         const offset = Math.min(Math.max(poured - tileHeight, 0), maxOffset);
 
-        spaghettiStack.style.transform = `translateY(${-offset}px)`;
+      spaghettiStack.style.transform = `translateY(${-offset}px)`;
 
-        if (storyInner) {
-          storyInner.style.transform = `translateY(${-offset}px)`;
+        // Move story with noodles on desktop, keep stable (scrollable) on mobile
+      if (storyEl) {
+      const isMobile = window.matchMedia("(max-width: 860px)").matches;
+
+      // storyEl is positioned with translate(-50%, -50%) as its "base"
+      // On desktop we add the extra Y offset so it rides the noodles.
+      storyEl.style.transform = isMobile
+        ? "translate(-50%, -50%)"
+        : `translate(-50%, calc(-50% + ${-offset}px))`;
+}
+
+// Keep inner text itself untransformed (better for mobile scrolling)
+if (storyInner) {
+  storyInner.style.transform = "translateY(0)";
+}
+
         }
       }
 
