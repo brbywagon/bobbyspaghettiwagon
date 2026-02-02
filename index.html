@@ -439,28 +439,26 @@
         object-fit: cover;
       }
 
-      /* Make noodle window narrower on mobile */
-      #spaghetti-wrap{ width: 180px; }
+  /* ✅ allow touch inside the noodle window (otherwise story can't scroll) */
+  #spaghetti-wrap{
+    pointer-events: auto;
+  }
+       /* ✅ but keep the noodles themselves non-interactive */
+  #spaghetti-stack{
+    pointer-events: none;
+  }
+ /* ✅ story can receive touch + scroll */
+  #spaghetti-story{
+    pointer-events: auto;
+  }
 
-      /* Story should be scrollable on mobile */
-      #spaghetti-story{
-        pointer-events: auto; /* allow touch on container */
-        transform: translateY(0) !important; /* JS also enforces, this is a guardrail */
-      }
-
-      #spaghetti-story .story-inner{
-        pointer-events: auto;
-        max-height: 42vh;              /* fits inside the mechanic row */
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
-        touch-action: pan-y;
-
-        /* keep story from hiding behind meatball */
-        width: calc(92% - 56px);
-        margin-right: 56px;
-        font-size: 18px;
-      }
+  #spaghetti-story .story-inner{
+    pointer-events: auto;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
 
       /* Meatball smaller */
       #meatball{
