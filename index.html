@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- IMPORTANT: keep this for iOS viewport correctness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>bobbyspaghettiwagon.com</title>
 
   <style>
@@ -338,6 +339,7 @@
       border-radius: 10px;
       padding: 10px 12px;
       backdrop-filter: blur(2px);
+      will-change: transform; /* we will animate this */
     }
 
     #spaghetti-story h3{
@@ -439,26 +441,12 @@
         object-fit: cover;
       }
 
-  /* ✅ allow touch inside the noodle window (otherwise story can't scroll) */
-  #spaghetti-wrap{
-    pointer-events: auto;
-  }
-       /* ✅ but keep the noodles themselves non-interactive */
-  #spaghetti-stack{
-    pointer-events: none;
-  }
- /* ✅ story can receive touch + scroll */
-  #spaghetti-story{
-    pointer-events: auto;
-  }
-
-  #spaghetti-story .story-inner{
-    pointer-events: auto;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    touch-action: pan-y;
-  }
+      /* On mobile we allow touch inside the noodle window,
+         but the story should NOT be a separate scroll region anymore.
+         It must ride with the noodles. */
+      #spaghetti-wrap{ width: 180px; pointer-events: none; }
+      #spaghetti-stack{ pointer-events: none; }
+      #spaghetti-story{ pointer-events: none; }
 
       /* Meatball smaller */
       #meatball{
@@ -569,7 +557,7 @@
             </div>
 
             <!-- STORY OVERLAY (INSIDE WRAP so it clips with noodles) -->
-            <div id="spaghetti-story">
+            <div id="spaghetti-story" aria-hidden="true">
               <div class="story-inner" id="story-inner">
                 <h3>This a my story!</h3>
                 <p>I came to this country with only one spaghetti noodle in my pocket. I had to use it for a shoe lace in my boot. I had no choice, I had nothing else. I had to cut my only spaghetti noodle in half and use one half a noodle for each boot lace and I pulled myself up by my boot spaghetties.</p>
@@ -650,7 +638,6 @@
     const meatball = document.getElementById("meatball");
     const spaghettiWrap = document.getElementById("spaghetti-wrap");
     const spaghettiStack = document.getElementById("spaghetti-stack");
-    const storyEl = document.getElementById("spaghetti-story");
     const storyInner = document.getElementById("story-inner");
 
     const handsScene = document.getElementById("hands-scene");
@@ -762,15 +749,9 @@
 
         spaghettiStack.style.transform = `translateY(${-offset}px)`;
 
-        // ✅ Story rides noodles on desktop, stays stable on mobile (scrollable)
-        if (storyEl) {
-          const isMobile = window.matchMedia("(max-width: 860px)").matches;
-          storyEl.style.transform = isMobile ? "translateY(0)" : `translateY(${-offset}px)`;
-        }
-
-        // ✅ Do NOT transform storyInner (keeps mobile scrolling sane)
+        // ✅ CHANGE: Story moves WITH noodles on BOTH desktop + mobile
         if (storyInner) {
-          storyInner.style.transform = "translateY(0)";
+          storyInner.style.transform = `translateY(${-offset}px)`;
         }
       }
 
