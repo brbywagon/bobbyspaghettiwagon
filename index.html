@@ -22,10 +22,10 @@
     h1 { margin-top: 0; }
 
     marquee {
-    font-size: 32px;       /* try 28–48px */
-    font-weight: 900;
-    letter-spacing: 1px;
-    padding: 8px 0;
+      font-size: 32px;       /* try 28–48px */
+      font-weight: 900;
+      letter-spacing: 1px;
+      padding: 8px 0;
     }
 
     .text-block {
@@ -505,6 +505,52 @@
         font-size: 14px;
       }
     }
+
+    /* --- ETSY SHIRT CTA --- */
+    .etsy-cta {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .etsy-cta-banner {
+      display: inline-block;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      font-size: 18px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(177, 18, 38, 0.92); /* sauce-red vibe */
+      border: 1px solid rgba(255,255,255,0.22);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+      margin-bottom: 12px;
+    }
+
+    .etsy-button {
+      display: inline-block;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.25);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+      transform: translateZ(0);
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+
+    .etsy-button:hover {
+      transform: scale(1.02);
+      filter: brightness(1.05);
+    }
+
+    .etsy-button img {
+      display: block;
+      width: min(520px, 100%);
+      height: auto;
+    }
+
+    .etsy-cta-sub {
+      margin-top: 10px;
+      font-size: 12px;
+      opacity: 0.85;
+    }
   </style>
 </head>
 
@@ -536,6 +582,22 @@
       no matter how many burns you get you will under no circumstance litigate your experience here at bobby's spghetti wagon .com.
       Period. Enjoy your spghetti. It's good. You're gonna like it.
     </p>
+
+    <!-- ✅ ETSY SHIRT BUTTON (image = clickable "button") -->
+    <div class="etsy-cta">
+      <div class="etsy-cta-banner">New Drip to impress your friends!</div>
+
+      <a class="etsy-button"
+         href="https://www.etsy.com/listing/4464619989/bobbyspaghettiwagoncom-t-shirt"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="Order the Bobby Spaghetti Wagon shirt on Etsy">
+        <!-- IMPORTANT: ensure this image file exists in the same folder as index.html -->
+        <img src="spaghetti_shirt_front-Picsart.webp" alt="Order the Bobby Spaghetti Wagon Shirt">
+      </a>
+
+      <div class="etsy-cta-sub">Opens Etsy in a new tab (secure checkout)</div>
+    </div>
   </div>
 
   <section id="spaghetti-scene">
@@ -756,7 +818,7 @@
 
         spaghettiStack.style.transform = `translateY(${-offset}px)`;
 
-        // ✅ CHANGE: Story moves WITH noodles on BOTH desktop + mobile
+        // Story moves WITH noodles on BOTH desktop + mobile
         if (storyInner) {
           storyInner.style.transform = `translateY(${-offset}px)`;
         }
