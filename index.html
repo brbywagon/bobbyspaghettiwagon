@@ -444,37 +444,7 @@
         align-items: stretch;
         overflow: hidden;
       }
-      /* ===== DESKTOP: guarantee the reviews area is a real scroll container ===== */
-      @media (min-width: 861px){
-        .scene-inner{
-          /* keep your sticky stable, but don't let it break nested scroll */
-          overflow: visible; /* <-- key change for desktop */
-        }
-      
-        #right-sidebar{
-          height: 100%;
-          min-height: 0;
-          align-self: stretch;
-        }
-      
-        #reviews-column{
-          height: 100%;
-          min-height: 0;
-        }
-      
-        /* Make each panel actually split the available height */
-        #reviews-feed-panel,
-        #reviews-form-panel{
-          min-height: 0;
-        }
-      
-        /* Ensure the feed/form bodies can scroll */
-        #reviews-feed-panel .panel-body,
-        #reviews-form-panel .panel-body{
-          overflow-y: auto;
-          min-height: 0;
-        }
-      }
+
       /* Make mechanic stage fill its row nicely */
       #mechanic-stage{
         height: 100%;
@@ -543,7 +513,37 @@
         font-size: 14px;
       }
     }
-
+  /* ===== DESKTOP: guarantee the reviews area is a real scroll container ===== */
+  @media (min-width: 861px){
+    .scene-inner{
+      /* keep your sticky stable, but don't let it break nested scroll */
+      overflow: visible; /* <-- key change for desktop */
+    }
+  
+    #right-sidebar{
+      height: 100%;
+      min-height: 0;
+      align-self: stretch;
+    }
+  
+    #reviews-column{
+      height: 100%;
+      min-height: 0;
+    }
+  
+    /* Make each panel actually split the available height */
+    #reviews-feed-panel,
+    #reviews-form-panel{
+      min-height: 0;
+    }
+  
+    /* Ensure the feed/form bodies can scroll */
+    #reviews-feed-panel .panel-body,
+    #reviews-form-panel .panel-body{
+      overflow-y: auto;
+      min-height: 0;
+    }
+  }
     /* --- ETSY SHIRT CTA --- */
     .etsy-cta {
       margin-top: 18px;
@@ -1056,7 +1056,7 @@
   // Desktop helper: when the mouse is over the reviews feed, wheel-scroll the feed
   // instead of advancing the page scroll (which drives your sticky scene).
   (() => {
-    const el = document.getElementById("reviews-feed");
+    const el = document.querySelector("#reviews-feed-panel .panel-body");
     if (!el) return;
   
     el.addEventListener("wheel", (e) => {
@@ -1066,7 +1066,6 @@
       const atTop = el.scrollTop <= 0;
       const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
   
-      // If the feed can consume this wheel, prevent the page from scrolling
       if ((!atTop && e.deltaY < 0) || (!atBottom && e.deltaY > 0)) {
         e.preventDefault();
         el.scrollTop += e.deltaY;
