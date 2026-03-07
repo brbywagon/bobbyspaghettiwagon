@@ -1053,6 +1053,26 @@
   })();
 
   renderReviews();
+  // Desktop helper: when the mouse is over the reviews feed, wheel-scroll the feed
+  // instead of advancing the page scroll (which drives your sticky scene).
+  (() => {
+    const el = document.getElementById("reviews-feed");
+    if (!el) return;
+  
+    el.addEventListener("wheel", (e) => {
+      const canScroll = el.scrollHeight > el.clientHeight;
+      if (!canScroll) return;
+  
+      const atTop = el.scrollTop <= 0;
+      const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+  
+      // If the feed can consume this wheel, prevent the page from scrolling
+      if ((!atTop && e.deltaY < 0) || (!atBottom && e.deltaY > 0)) {
+        e.preventDefault();
+        el.scrollTop += e.deltaY;
+      }
+    }, { passive: false });
+  })();
   </script>
 </body>
 </html>
