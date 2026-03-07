@@ -7,12 +7,12 @@
   <title>bobbyspaghettiwagon.com</title>
 
   <!-- FAVICONS -->
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="icon" href="favicon.ico">
-<!-- Optional -->
-<!-- <link rel="manifest" href="site.webmanifest"> -->
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" href="favicon.ico">
+  <!-- Optional -->
+  <!-- <link rel="manifest" href="site.webmanifest"> -->
   
   <style>
     body {
@@ -30,7 +30,7 @@
     h1 { margin-top: 0; }
 
     marquee {
-      font-size: 32px;       /* try 28–48px */
+      font-size: 32px;
       font-weight: 900;
       letter-spacing: 1px;
       padding: 8px 0;
@@ -62,7 +62,7 @@
       align-items: center;
       padding: 16px;
       box-sizing: border-box;
-      overflow: hidden; /* keeps sticky stable on mobile */
+      overflow: hidden;
     }
 
     #right-sidebar{
@@ -210,6 +210,8 @@
       font-size: 13px;
       line-height: 1.3;
       opacity: 0.95;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
     .field{ display: block; margin-bottom: 12px; }
@@ -261,6 +263,11 @@
       color: black;
     }
 
+    #submit-review:disabled{
+      opacity: 0.7;
+      cursor: wait;
+    }
+
     button.secondary{
       background: rgba(255,255,255,0.14);
       color: white;
@@ -299,11 +306,11 @@
       left: 52%;
       top: 50%;
       width: 220px;
-      height: 0px;          /* animated */
-      overflow: hidden;     /* IMPORTANT: clips noodles + story */
+      height: 0px;
+      overflow: hidden;
       transform: translateX(-50%);
       will-change: height;
-      pointer-events: none; /* page scroll drives scene */
+      pointer-events: none;
     }
 
     #spaghetti-stack {
@@ -354,7 +361,7 @@
       border-radius: 10px;
       padding: 10px 12px;
       backdrop-filter: blur(2px);
-      will-change: transform; /* we will animate this */
+      will-change: transform;
     }
 
     #spaghetti-story h3{
@@ -435,35 +442,30 @@
 
     /* ===================== MOBILE ===================== */
     @media (max-width: 860px){
-      /* Force a reliable split so the sidebar always has room (form won't "disappear") */
       .scene-inner{
         grid-template-columns: 1fr;
-        grid-template-rows: 56vh 44vh; /* ✅ top mechanic, bottom sidebar */
+        grid-template-rows: 56vh 44vh;
         gap: 12px;
         height: 100vh;
         align-items: stretch;
         overflow: hidden;
       }
 
-      /* Make mechanic stage fill its row nicely */
       #mechanic-stage{
         height: 100%;
         max-width: 760px;
       }
+
       #mechanic-img{
         height: 100%;
         width: 100%;
         object-fit: cover;
       }
 
-      /* On mobile we allow touch inside the noodle window,
-         but the story should NOT be a separate scroll region anymore.
-         It must ride with the noodles. */
       #spaghetti-wrap{ width: 180px; pointer-events: none; }
       #spaghetti-stack{ pointer-events: none; }
       #spaghetti-story{ pointer-events: none; }
 
-      /* Meatball smaller */
       #meatball{
         width: 120px;
         height: 120px;
@@ -471,13 +473,11 @@
         top: 58%;
       }
 
-      /* Sidebar must be allowed to show both panels */
       #right-sidebar{
         min-height: 0;
         overflow: hidden;
       }
 
-      /* Two panels: feed (~6 reviews) + form */
       #reviews-column{
         display: grid;
         grid-template-rows: 52% 48%;
@@ -486,7 +486,6 @@
         min-height: 0;
       }
 
-      /* Both panel bodies scroll if needed (prevents clipping on small phones) */
       #reviews-feed-panel .panel-body,
       #reviews-form-panel .panel-body{
         overflow: auto;
@@ -494,56 +493,55 @@
         overscroll-behavior: contain;
       }
 
-      /* Tighten review cards so ~6 fit better */
       .review{
         padding: 8px 9px;
         margin-bottom: 8px;
       }
+
       .review-text{
         font-size: 12.5px;
         line-height: 1.25;
       }
 
-      /* Make the form more compact */
       textarea#reviewer-comment{
         rows: 4;
       }
+
       input, textarea{
         padding: 8px 10px;
         font-size: 14px;
       }
     }
-  /* ===== DESKTOP: guarantee the reviews area is a real scroll container ===== */
-  @media (min-width: 861px){
-    .scene-inner{
-      /* keep your sticky stable, but don't let it break nested scroll */
-      overflow: visible; /* <-- key change for desktop */
-    }
+
+    /* ===== DESKTOP: guarantee the reviews area is a real scroll container ===== */
+    @media (min-width: 861px){
+      .scene-inner{
+        overflow: visible;
+      }
   
-    #right-sidebar{
-      height: 100%;
-      min-height: 0;
-      align-self: stretch;
-    }
+      #right-sidebar{
+        height: 100%;
+        min-height: 0;
+        align-self: stretch;
+      }
   
-    #reviews-column{
-      height: 100%;
-      min-height: 0;
-    }
+      #reviews-column{
+        height: 100%;
+        min-height: 0;
+      }
   
-    /* Make each panel actually split the available height */
-    #reviews-feed-panel,
-    #reviews-form-panel{
-      min-height: 0;
-    }
+      #reviews-feed-panel,
+      #reviews-form-panel{
+        min-height: 0;
+      }
   
-    /* Ensure the feed/form bodies can scroll */
-    #reviews-feed-panel .panel-body,
-    #reviews-form-panel .panel-body{
-      overflow-y: auto;
-      min-height: 0;
+      #reviews-feed-panel .panel-body,
+      #reviews-form-panel .panel-body{
+        overflow-y: auto;
+        min-height: 0;
+      }
     }
-  }
+
     /* --- ETSY SHIRT CTA --- */
     .etsy-cta {
       margin-top: 18px;
@@ -557,7 +555,7 @@
       font-size: 18px;
       padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(177, 18, 38, 0.92); /* sauce-red vibe */
+      background: rgba(177, 18, 38, 0.92);
       border: 1px solid rgba(255,255,255,0.22);
       box-shadow: 0 10px 24px rgba(0,0,0,0.35);
       margin-bottom: 12px;
@@ -602,7 +600,7 @@
       <div class="hands-stage">
         <img id="meholding-hero" src="meholding.png" alt="Me holding spaghetti (hero)">
         <img id="head-right-hero" src="headpointright.png" alt="Head pointing right (hero)">
-        <img id="head-left-hero"  src="headpointleft.png"  alt="Head pointing left (hero)">
+        <img id="head-left-hero" src="headpointleft.png" alt="Head pointing left (hero)">
       </div>
     </div>
   </section>
@@ -621,7 +619,6 @@
       Period. Enjoy your spghetti. It's good. You're gonna like it.
     </p>
 
-    <!-- ✅ ETSY SHIRT BUTTON (image = clickable "button") -->
     <div class="etsy-cta">
       <div class="etsy-cta-banner">Everyone jealous of my new shirt!</div>
 
@@ -630,7 +627,6 @@
          target="_blank"
          rel="noopener noreferrer"
          aria-label="Order the Bobby Spaghetti Wagon shirt on Etsy">
-        <!-- IMPORTANT: ensure this image file exists in the same folder as index.html -->
         <img src="spaghetti_shirt_front-Picsart.webp" alt="Order the Bobby Spaghetti Wagon Shirt">
       </a>
 
@@ -663,7 +659,6 @@
               <div class="spaghetti-tile t14"></div>
             </div>
 
-            <!-- STORY OVERLAY (INSIDE WRAP so it clips with noodles) -->
             <div id="spaghetti-story" aria-hidden="true">
               <div class="story-inner" id="story-inner">
                 <h3>This a my story!</h3>
@@ -695,7 +690,7 @@
           <section class="panel" id="reviews-form-panel">
             <div class="panel-header">
               <div class="panel-title">Say a nice special 100 % stars and suggestions for the worlds best Bobby Spaghetti wagon.com</div>
-              <div class="panel-sub">Name + comment (100 words max).</div>
+              <div class="panel-sub">Name + comment (100 words max). All submissions are reviewed before posting.</div>
             </div>
 
             <div class="panel-body">
@@ -711,13 +706,18 @@
                   <div class="counter"><span id="word-count">0</span>/100 words</div>
                 </label>
 
+                <div style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;" aria-hidden="true">
+                  <label for="website">Website</label>
+                  <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+                </div>
+
                 <div class="form-row">
                   <button type="submit" id="submit-review">Submit 100% Stars</button>
-                  <button type="button" id="clear-my-reviews" class="secondary">Clear my device reviews</button>
+                  <button type="button" id="clear-my-reviews" class="secondary">Clear form</button>
                 </div>
 
                 <div class="fineprint">
-                  Note: Submissions save on <b>your device</b> only (localStorage).
+                  Comments are submitted for approval before appearing publicly.
                 </div>
               </form>
             </div>
@@ -734,7 +734,7 @@
       <div class="hands-stage">
         <img id="meholding" src="meholding.png" alt="Me holding spaghetti">
         <img id="head-right" src="headpointright.png" alt="Head pointing right">
-        <img id="head-left"  src="headpointleft.png"  alt="Head pointing left">
+        <img id="head-left" src="headpointleft.png" alt="Head pointing left">
       </div>
     </div>
   </section>
@@ -774,7 +774,6 @@
     }
 
     function tick() {
-      // HERO AUTO LOOP
       if (hero && meHoldingHero && headRightHero && headLeftHero) {
         const now = performance.now() / 1000;
         const phase = (now / HERO_SECONDS_PER_CYCLE) % 1;
@@ -786,7 +785,7 @@
         const p3 = [0.50, 0.75];
         const p4 = [0.75, 1.00];
 
-        { // meholding rises
+        {
           const t = clamp((p - p1[0]) / (p1[1] - p1[0]));
           const y = lerp(110, 0, pe(t));
           meHoldingHero.style.transform = `translate(-50%, ${y}vh)`;
@@ -795,7 +794,7 @@
         const targetRightXvw = 18;
         const targetLeftXvw  = -18;
 
-        { // right head
+        {
           let xvw = -110;
           if (p < p2[0]) xvw = -110;
           else if (p <= p2[1]) {
@@ -809,7 +808,7 @@
           headRightHero.style.transform = `translate(${xvw}vw, 0)`;
         }
 
-        { // left head
+        {
           let xvw = 110;
           if (p < p3[0]) xvw = 110;
           else if (p <= p3[1]) {
@@ -824,11 +823,9 @@
         }
       }
 
-      // SPAGHETTI SCENE
       if (scene && meatball && spaghettiWrap && spaghettiStack) {
         const progress = sceneProgress(scene);
 
-        // Meatball roll
         const spins = 5;
         const rot = progress * (spins * 360);
         const bob = Math.sin(progress * Math.PI * 2) * 6;
@@ -840,7 +837,6 @@
         const greasiness = 0.95 + progress * 0.15;
         meatball.style.filter = `saturate(${1.0 + progress * 0.25}) brightness(${greasiness})`;
 
-        // Spaghetti conveyor
         const tileEl = document.querySelector(".spaghetti-tile");
         const tileHeight = tileEl ? tileEl.getBoundingClientRect().height : 320;
         const tiles = 14;
@@ -856,13 +852,11 @@
 
         spaghettiStack.style.transform = `translateY(${-offset}px)`;
 
-        // Story moves WITH noodles on BOTH desktop + mobile
         if (storyInner) {
           storyInner.style.transform = `translateY(${-offset}px)`;
         }
       }
 
-      // HANDS SCENE (scroll-driven)
       if (handsScene && meHolding && headRight && headLeft) {
         const p = sceneProgress(handsScene);
 
@@ -915,15 +909,17 @@
     requestAnimationFrame(tick);
   })();
 
-  // ===== Reviews: localStorage feed + submit form =====
-  const REVIEWS_KEY = "bsw_reviews_v1";
+  // ===== Reviews: Google Apps Script moderated feed =====
+  const COMMENTS_API_URL = "https://script.google.com/macros/s/AKfycbyiD1HBflx7FQI8bWvMel81jK4J_Tgr7yxrIkIM1cjNWFSrxpkPseM9OScuCz-lWjqyqg/exec";
 
   const feedEl = document.getElementById("reviews-feed");
   const formEl = document.getElementById("review-form");
   const nameEl = document.getElementById("reviewer-name");
   const commentEl = document.getElementById("reviewer-comment");
+  const websiteEl = document.getElementById("website");
   const wordCountEl = document.getElementById("word-count");
   const clearBtn = document.getElementById("clear-my-reviews");
+  const submitBtn = document.getElementById("submit-review");
 
   function escapeHtml(s){
     return String(s)
@@ -934,61 +930,23 @@
       .replaceAll("'","&#039;");
   }
 
-  function loadReviews(){
-    try {
-      const raw = localStorage.getItem(REVIEWS_KEY);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function saveReviews(list){
-    localStorage.setItem(REVIEWS_KEY, JSON.stringify(list));
-  }
-
   function formatTime(ts){
     try {
       const d = new Date(ts);
-      return d.toLocaleString(undefined, { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+      return d.toLocaleString(undefined, {
+        year:"numeric",
+        month:"short",
+        day:"2-digit",
+        hour:"2-digit",
+        minute:"2-digit"
+      });
     } catch {
       return "";
     }
   }
 
-  function renderReviews(){
-    if (!feedEl) return;
-
-    const reviews = loadReviews().sort((a,b) => (b.ts || 0) - (a.ts || 0));
-
-    if (reviews.length === 0){
-      feedEl.innerHTML = `
-        <div class="review">
-          <div class="review-top">
-            <div class="review-name">Bobby Spaghetti Wagon HQ</div>
-            <div class="review-time">${formatTime(Date.now())}</div>
-          </div>
-          <div class="review-text">No reviews yet. Be the first brave soul to enter the sauce.</div>
-        </div>
-      `;
-      return;
-    }
-
-    feedEl.innerHTML = reviews.map(r => `
-      <div class="review">
-        <div class="review-top">
-          <div class="review-name">${escapeHtml(r.name || "Anonymous")}</div>
-          <div class="review-time">${formatTime(r.ts)}</div>
-        </div>
-        <div class="review-text">${escapeHtml(r.comment || "")}</div>
-      </div>
-    `).join("");
-  }
-
   function countWords(text){
-    const words = text.trim().split(/\s+/).filter(Boolean);
-    return words.length;
+    return text.trim().split(/\s+/).filter(Boolean).length;
   }
 
   function enforceWordLimit(){
@@ -998,6 +956,81 @@
       commentEl.value = words.slice(0, 100).join(" ");
     }
     wordCountEl.textContent = String(countWords(commentEl.value));
+  }
+
+  async function fetchJsonFromAppsScript(url, options = {}) {
+    const response = await fetch(url, {
+      redirect: "follow",
+      ...options
+    });
+
+    const text = await response.text();
+
+    try {
+      return JSON.parse(text);
+    } catch (err) {
+      console.error("Non-JSON response from Apps Script:", text);
+      throw new Error("Unexpected response from comments service.");
+    }
+  }
+
+  async function renderReviews(){
+    if (!feedEl) return;
+
+    feedEl.innerHTML = `
+      <div class="review">
+        <div class="review-top">
+          <div class="review-name">Bobby Spaghetti Wagon HQ</div>
+          <div class="review-time">${formatTime(Date.now())}</div>
+        </div>
+        <div class="review-text">Loading approved comments from the sauce vault…</div>
+      </div>
+    `;
+
+    try {
+      const payload = await fetchJsonFromAppsScript(COMMENTS_API_URL);
+
+      if (!payload.ok) {
+        throw new Error(payload.error || "Failed to load comments.");
+      }
+
+      const comments = Array.isArray(payload.comments) ? payload.comments : [];
+
+      if (comments.length === 0){
+        feedEl.innerHTML = `
+          <div class="review">
+            <div class="review-top">
+              <div class="review-name">Bobby Spaghetti Wagon HQ</div>
+              <div class="review-time">${formatTime(Date.now())}</div>
+            </div>
+            <div class="review-text">No approved reviews yet. Be the first brave soul to enter the sauce.</div>
+          </div>
+        `;
+        return;
+      }
+
+      feedEl.innerHTML = comments.map(r => `
+        <div class="review">
+          <div class="review-top">
+            <div class="review-name">${escapeHtml(r.name || "Anonymous")}</div>
+            <div class="review-time">${formatTime(r.created_at)}</div>
+          </div>
+          <div class="review-text">${escapeHtml(r.comment || "")}</div>
+        </div>
+      `).join("");
+
+    } catch (err) {
+      console.error(err);
+      feedEl.innerHTML = `
+        <div class="review">
+          <div class="review-top">
+            <div class="review-name">Bobby Spaghetti Wagon HQ</div>
+            <div class="review-time">${formatTime(Date.now())}</div>
+          </div>
+          <div class="review-text">Could not load comments right now.</div>
+        </div>
+      `;
+    }
   }
 
   if (commentEl){
@@ -1010,49 +1043,73 @@
     });
   }
 
+  if (clearBtn){
+    clearBtn.addEventListener("click", () => {
+      if (nameEl) nameEl.value = "";
+      if (commentEl) commentEl.value = "";
+      if (websiteEl) websiteEl.value = "";
+      enforceWordLimit();
+    });
+  }
+
   if (formEl){
-    formEl.addEventListener("submit", (e) => {
+    formEl.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const name = (nameEl?.value || "").trim().slice(0, 40);
       const commentRaw = (commentEl?.value || "").trim();
       const words = commentRaw.split(/\s+/).filter(Boolean);
-      if (!name || words.length === 0) return;
+
+      if (!name || words.length === 0) {
+        alert("Please enter your name and a comment.");
+        return;
+      }
 
       const comment = words.slice(0, 100).join(" ");
-      const reviews = loadReviews();
-      reviews.push({ name, comment, ts: Date.now() });
-      saveReviews(reviews);
 
-      commentEl.value = "";
-      enforceWordLimit();
-      renderReviews();
+      const payload = {
+        name,
+        comment,
+        website: websiteEl ? websiteEl.value : ""
+      };
 
-      if (feedEl) feedEl.scrollTop = 0;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      try {
+        const result = await fetchJsonFromAppsScript(COMMENTS_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!result.ok) {
+          throw new Error(result.error || "Submission failed.");
+        }
+
+        alert("Your comment was submitted and is waiting for approval.");
+
+        if (nameEl) nameEl.value = "";
+        if (commentEl) commentEl.value = "";
+        if (websiteEl) websiteEl.value = "";
+        enforceWordLimit();
+
+        await renderReviews();
+      } catch (err) {
+        console.error(err);
+        alert(err.message || "Sorry, the comment could not be submitted right now.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit 100% Stars";
+      }
     });
   }
-
-  if (clearBtn){
-    clearBtn.addEventListener("click", () => {
-      localStorage.removeItem(REVIEWS_KEY);
-      renderReviews();
-    });
-  }
-
-  (function seedIfEmpty(){
-    const existing = loadReviews();
-    if (existing.length > 0) return;
-    const seed = [
-      { name: "Valley Forge Automotive Center", comment: "Where do I start with this place. First of all Bobby is tresspassing on my property. He never askedd permission to park his skateboard wagon on my tireshop lawn. Sendondly, he has been filling my dumpster with all his personal garbage and now a family of raccoons live there and keep attacking my employees. Thirdly, no way in hell is his operation going to pass any health codes. HE HAS NO RUNNING WATER! I keep catching him boiling noodles under the overpass because he found a break in the water line the city refuses to fix there. ", ts: Date.now() - 86400000 * 2.5 },
-      { name: "barometric marinara machine", comment: "my favorite restaurant, great for family and pets. don't bring grandma tho, I heard they go missing here", ts: Date.now() - 86400000 * 2 },
-      { name: "Spork fed", comment: "Every time I go I get the same thong becaise it's the only thing they have on the menu", ts: Date.now() - 86400000 * 1.5 },
-      { name: "JERRY TIME", comment: "I eat a meatball and grow attractive muscells", ts: Date.now() - 86400000 * 1 },
-      { name: "torta pounder with cheese", comment: "The spghetti burn my feet", ts: Date.now() - 86400000 * .5 },
-    ];
-    saveReviews(seed);
-  })();
 
   renderReviews();
+  enforceWordLimit();
+
   // Desktop helper: when the mouse is over the reviews feed, wheel-scroll the feed
   // instead of advancing the page scroll (which drives your sticky scene).
   (() => {
