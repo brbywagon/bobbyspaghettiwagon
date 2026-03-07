@@ -444,7 +444,37 @@
         align-items: stretch;
         overflow: hidden;
       }
-
+      /* ===== DESKTOP: guarantee the reviews area is a real scroll container ===== */
+      @media (min-width: 861px){
+        .scene-inner{
+          /* keep your sticky stable, but don't let it break nested scroll */
+          overflow: visible; /* <-- key change for desktop */
+        }
+      
+        #right-sidebar{
+          height: 100%;
+          min-height: 0;
+          align-self: stretch;
+        }
+      
+        #reviews-column{
+          height: 100%;
+          min-height: 0;
+        }
+      
+        /* Make each panel actually split the available height */
+        #reviews-feed-panel,
+        #reviews-form-panel{
+          min-height: 0;
+        }
+      
+        /* Ensure the feed/form bodies can scroll */
+        #reviews-feed-panel .panel-body,
+        #reviews-form-panel .panel-body{
+          overflow-y: auto;
+          min-height: 0;
+        }
+      }
       /* Make mechanic stage fill its row nicely */
       #mechanic-stage{
         height: 100%;
