@@ -444,73 +444,76 @@
     @media (max-width: 860px){
       .scene-inner{
         grid-template-columns: 1fr;
-        grid-template-rows: 56vh 44vh;
+        grid-template-rows: 50vh minmax(0, 50vh);
         gap: 12px;
         height: 100vh;
         align-items: stretch;
         overflow: hidden;
       }
-
+    
       #mechanic-stage{
         height: 100%;
         max-width: 760px;
       }
-
+    
       #mechanic-img{
         height: 100%;
         width: 100%;
         object-fit: cover;
       }
-
+    
       #spaghetti-wrap{ width: 180px; pointer-events: none; }
       #spaghetti-stack{ pointer-events: none; }
       #spaghetti-story{ pointer-events: none; }
-
+    
       #meatball{
         width: 120px;
         height: 120px;
         right: 6px;
         top: 58%;
       }
-
+    
       #right-sidebar{
         min-height: 0;
         overflow: hidden;
+        height: 100%;
       }
-
+    
       #reviews-column{
         display: grid;
-        grid-template-rows: 60dvh auto;
-        gap: 12px;
-        height: auto;
+        grid-template-rows: minmax(0, 1.15fr) minmax(0, 0.95fr);
+        gap: 10px;
+        height: 100%;
         min-height: 0;
       }
-
+    
+      #reviews-feed-panel,
+      #reviews-form-panel{
+        min-height: 0;
+      }
+    
       #reviews-feed-panel .panel-body,
       #reviews-form-panel .panel-body{
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
+        min-height: 0;
       }
-      
-      #reviews-feed-panel{
-        min-height: 45dvh;
-      }
-      
+    
       .review{
         padding: 8px 9px;
         margin-bottom: 8px;
       }
-
+    
       .review-text{
         font-size: 12.5px;
         line-height: 1.25;
       }
-
+    
       textarea#reviewer-comment{
-        min-height: 140px;
+        min-height: 120px;
       }
-
+    
       input, textarea{
         padding: 8px 10px;
         font-size: 14px;
