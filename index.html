@@ -480,19 +480,23 @@
 
       #reviews-column{
         display: grid;
-        grid-template-rows: 52% 48%;
-        gap: 10px;
-        height: 100%;
+        grid-template-rows: 60dvh auto;
+        gap: 12px;
+        height: auto;
         min-height: 0;
       }
 
       #reviews-feed-panel .panel-body,
       #reviews-form-panel .panel-body{
-        overflow: auto;
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
       }
-
+      
+      #reviews-feed-panel{
+        min-height: 45dvh;
+      }
+      
       .review{
         padding: 8px 9px;
         margin-bottom: 8px;
@@ -504,7 +508,7 @@
       }
 
       textarea#reviewer-comment{
-        rows: 4;
+        min-height: 140px;
       }
 
       input, textarea{
