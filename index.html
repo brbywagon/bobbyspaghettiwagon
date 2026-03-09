@@ -442,13 +442,14 @@
 
     /* ===================== MOBILE ===================== */
     @media (max-width: 860px){
-      .scene-inner{
-        grid-template-columns: 1fr;
-        grid-template-rows: 50vh minmax(0, 50vh);
-        gap: 12px;
-        height: 100vh;
-        align-items: stretch;
-        overflow: hidden;
+    .scene-inner{
+      grid-template-columns: 1fr;
+      grid-template-rows: 50vh auto;
+      gap: 12px;
+      min-height: 100vh;
+      height: auto;
+      align-items: stretch;
+      overflow: visible;
       }
     
       #mechanic-stage{
@@ -475,28 +476,36 @@
     
       #right-sidebar{
         min-height: 0;
-        overflow: hidden;
-        height: 100%;
+        overflow: visible;
+        height: auto;
       }
-    
+      
       #reviews-column{
         display: grid;
-        grid-template-rows: minmax(0, 1.15fr) minmax(0, 0.95fr);
-        gap: 10px;
-        height: 100%;
+        grid-template-rows: minmax(260px, 42dvh) auto;
+        gap: 12px;
+        height: auto;
         min-height: 0;
       }
-    
-      #reviews-feed-panel,
+      
+      #reviews-feed-panel{
+        min-height: 0;
+      }
+      
       #reviews-form-panel{
-        min-height: 0;
+        min-height: fit-content;
       }
-    
-      #reviews-feed-panel .panel-body,
-      #reviews-form-panel .panel-body{
+      
+      #reviews-feed-panel .panel-body{
+        max-height: 32dvh;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
+        min-height: 0;
+      }
+      
+      #reviews-form-panel .panel-body{
+        overflow: visible;
         min-height: 0;
       }
     
@@ -511,7 +520,7 @@
       }
     
       textarea#reviewer-comment{
-        min-height: 120px;
+        min-height: 160px;
       }
     
       input, textarea{
