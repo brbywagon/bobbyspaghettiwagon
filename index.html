@@ -28,13 +28,40 @@
     }
 
     h1 { margin-top: 0; }
-
-    marquee {
+    
+    /* NEW SCROLLING BANNER */
+    .top-banner {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      background: rgba(0,0,0,0.35);
+      border-radius: 10px;
+      padding: 8px 0;
+      box-sizing: border-box;
+      position: relative;
+    }
+    
+    .top-banner-track {
+      display: inline-block;
+      white-space: nowrap;
+      will-change: transform;
+      animation: banner-scroll 18s linear infinite;
       font-size: 32px;
       font-weight: 900;
       letter-spacing: 1px;
-      padding: 8px 0;
+      padding-left: 100%;
     }
+    
+    .top-banner-track span {
+      display: inline-block;
+      padding-right: 80px;
+    }
+    
+    @keyframes banner-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
 
     .text-block {
       background: rgba(0, 0, 0, 0.6);
@@ -608,8 +635,12 @@
 
 <body>
   <h1>Welcome to Bobby Spaghetti Wagon .com</h1>
-  <marquee>BATHROOM FOR CUSTOMERS ONLY *UPDATE* BATHROOM OUT OF ORDER *UPDATE* NO PER ON MY WAGON! GO TO THE TIRE SHOP NEXTDOOR</marquee>
-
+<div class="top-banner" aria-label="Scrolling announcement banner">
+  <div class="top-banner-track">
+    <span>BATHROOM FOR CUSTOMERS ONLY *UPDATE* BATHROOM OUT OF ORDER *UPDATE* NO PER ON MY WAGON! GO TO THE TIRE SHOP NEXTDOOR</span>
+    <span>BATHROOM FOR CUSTOMERS ONLY *UPDATE* BATHROOM OUT OF ORDER *UPDATE* NO PER ON MY WAGON! GO TO THE TIRE SHOP NEXTDOOR</span>
+  </div>
+</div>
   <section id="hands-hero">
     <div class="hands-inner">
       <div class="hands-backdrop"></div>
